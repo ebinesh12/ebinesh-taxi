@@ -53,7 +53,7 @@ export default function Home() {
                     asChild
                     className="bg-yellow-400 hover:bg-yellow-500 text-stone-900 mt-5"
                   >
-                    <a href="/bus/list">Explore More</a>
+                    <a href="/booking-ride">Explore More</a>
                   </Button>
                 </div>
               </div>
@@ -92,7 +92,7 @@ export default function Home() {
                     different travel needs and preferences.
                   </p>
                   <Button asChild>
-                    <a href="/bus/list">Booking Now</a>
+                    <a href="/booking-ride">Booking Now</a>
                   </Button>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -192,7 +192,7 @@ export default function Home() {
                     variant="outline"
                     className="hover:bg-gray-600 hover:text-white"
                   >
-                    <a href="/bus/list">Find Now</a>
+                    <a href="/booking-ride">Find Now</a>
                   </Button>
                 </CardFooter>
               </Card>
