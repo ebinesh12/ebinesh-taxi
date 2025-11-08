@@ -43,7 +43,9 @@ export default function LoginForm() {
 
       if (res.status === 200 && res.data.user) {
         dispatch(setUser(res.data.user));
-        router.replace("/admin");
+        // eslint-disable-next-line react-hooks/immutability
+        window.location.href = "/admin";
+        // router.push("/admin");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
