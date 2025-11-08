@@ -1,4 +1,4 @@
-// app/admin/layout.tsx
+
 import { Sidebar } from "@/components/Sidebar";
 // import { ModeToggle } from "@/components/mode-toggle"
 
