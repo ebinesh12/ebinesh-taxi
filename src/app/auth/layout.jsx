@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export default function AdminLayout({ children }) {
-
   return (
     <>
       <Header />
@@ -23,7 +22,7 @@ export default function AdminLayout({ children }) {
           <div
             className={cn(
               "absolute top-0 right-0 w-[350px] h-[350px] opacity-20 rounded-full blur-3xl animate-pulse",
-               "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 dark:from-blue-500 dark:via-indigo-600 dark:to-cyan-500",
+              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 dark:from-blue-500 dark:via-indigo-600 dark:to-cyan-500",
             )}
           ></div>
           {/* Right Blob */}

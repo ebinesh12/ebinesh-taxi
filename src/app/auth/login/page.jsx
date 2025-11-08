@@ -19,10 +19,13 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/userSlice";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -39,8 +42,8 @@ export default function LoginForm() {
       const res = await axios.post("/api/v1/signin", data);
 
       if (res.status === 200 && res.data.user) {
-        window.location.href = "/admin";
-        // router.push("/admin");
+        dispatch(setUser(res.data.user));
+        router.push("/admin");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

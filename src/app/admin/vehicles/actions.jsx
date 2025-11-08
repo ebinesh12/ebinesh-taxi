@@ -16,6 +16,18 @@ export async function addVehicle(formData) {
     status: formData.get("status"),
   };
 
+  // --- Handle the image upload ---
+  const imageFile = formData.get("vehicle_image");
+
+  if (imageFile && imageFile.size > 0) {
+    // 1. Convert file to ArrayBuffer
+    const bytes = await imageFile.arrayBuffer();
+    // 2. Create a Node.js Buffer
+    const buffer = Buffer.from(bytes);
+    // 3. Convert to hex string and prefix for bytea
+    newVehicle.vehicle_image = "\\x" + buffer.toString("hex");
+  }
+
   const { error } = await supabase.from("vehicles").insert([newVehicle]);
 
   if (error) {
@@ -41,6 +53,15 @@ export async function updateVehicle(formData) {
     base_fare: formData.get("base_fare"),
     status: formData.get("status"),
   };
+
+  // --- Handle optional image update ---
+  const imageFile = formData.get("vehicle_image");
+
+  if (imageFile && imageFile.size > 0) {
+    const bytes = await imageFile.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    updatedVehicle.vehicle_image = "\\x" + buffer.toString("hex");
+  }
 
   const { error } = await supabase
     .from("vehicles")

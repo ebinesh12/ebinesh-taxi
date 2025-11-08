@@ -44,7 +44,7 @@ export default function BookingVerification() {
       estimated_fare: tripDetails.estimatedFare,
       booking_ref: generateBookingId(),
     };
-console.log("Booking Data:", bookingData);
+    console.log("Booking Data:", bookingData);
     const { data, error } = await supabase
       .from("bookings")
       .insert([bookingData])

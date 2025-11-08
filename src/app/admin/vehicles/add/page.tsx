@@ -34,6 +34,15 @@ export default function AddVehiclePage() {
 
   // Client-side action to handle form submission and provide user feedback
   const handleAddVehicle = async (formData: FormData) => {
+    // Check if a file is selected for better UX, though the server handles the logic
+    const imageFile = formData.get("vehicle_image") as File;
+    if (imageFile && imageFile.size === 0) {
+      toast.info("No image selected", {
+        description: "Please select an image file to upload.",
+      });
+      return; // Stop if the file input is there but no file is chosen
+    }
+
     const result = await addVehicle(formData);
 
     // Check the result from the server action
@@ -46,7 +55,7 @@ export default function AddVehiclePage() {
       // Show a success toast
       toast.success("Vehicle added successfully!");
       // Redirect to the vehicles list page
-      router.push("/dashboard/vehicles");
+      router.push("/admin/vehicles");
     }
   };
 
@@ -62,34 +71,34 @@ export default function AddVehiclePage() {
         {/* The form calls the client-side handler for better UX */}
         <form action={handleAddVehicle}>
           <CardContent className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label htmlFor="name">Vehicle Name</Label>
-              <Input
-                id="name"
-                name="name"
-                required
-                placeholder="e.g., Toyota Camry, Volvo Bus"
-              />
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="name">Vehicle Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  required
+                  placeholder="e.g., Toyota Camry, Volvo Bus"
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="service_type">Service Type</Label>
-              <Select
-                name="service_type"
-                required
-                value={serviceType}
-                onValueChange={setServiceType}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select a service type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="One-Way">One-Way</SelectItem>
-                  <SelectItem value="Round-Trip">Round-Trip</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="service_type">Service Type</Label>
+                <Select
+                  name="service_type"
+                  required
+                  value={serviceType}
+                  onValueChange={setServiceType}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select a service type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="One-Way">One-Way</SelectItem>
+                    <SelectItem value="Round-Trip">Round-Trip</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="rate_per_km">Rate/KM ($)</Label>
                 <Input
@@ -112,24 +121,32 @@ export default function AddVehiclePage() {
                   placeholder="e.g., 5.00"
                 />
               </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
-              <Select
-                name="status"
-                required
-                value={status}
-                onValueChange={setStatus}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select initial status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ACTIVE">Active</SelectItem>
-                  <SelectItem value="INACTIVE">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="status">Status</Label>
+                <Select
+                  name="status"
+                  required
+                  value={status}
+                  onValueChange={setStatus}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select initial status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="ACTIVE">Active</SelectItem>
+                    <SelectItem value="INACTIVE">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="vehicle_image">Vehicle Image</Label>
+                <Input
+                  id="vehicle_image"
+                  name="vehicle_image"
+                  type="file"
+                  accept="image/png, image/jpeg, image/webp"
+                />
+              </div>
             </div>
           </CardContent>
           <CardFooter className="flex justify-end space-x-2">

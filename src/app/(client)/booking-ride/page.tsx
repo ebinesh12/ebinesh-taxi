@@ -38,7 +38,7 @@ export default function Home() {
             onClick={() => setServiceType("One-Way")}
             className={`px-4 py-2 text-lg font-semibold ${serviceType === "One-Way" ? "border-b-2 border-yellow-400 text-yellow-400" : "text-gray-500"}`}
           >
-            One-Way
+            One Way
           </button>
           <button
             onClick={() => setServiceType("Round-Trip")}

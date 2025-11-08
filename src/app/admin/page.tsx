@@ -25,7 +25,9 @@ async function getBookingStats(): Promise<BookingStats> {
 
   // Using Promise.all to fetch data in parallel for better performance
   const [totalResult, todayResult] = await Promise.all([
-    supabase.from("bookings").select("booking_id", { count: "exact", head: true }),
+    supabase
+      .from("bookings")
+      .select("booking_id", { count: "exact", head: true }),
     supabase
       .from("bookings")
       .select("booking_id", { count: "exact", head: true })
@@ -37,7 +39,10 @@ async function getBookingStats(): Promise<BookingStats> {
     console?.error("Error fetching total bookings:", totalResult.error.message);
   }
   if (todayResult.error) {
-    console?.error("Error fetching today's bookings:", todayResult.error.message);
+    console?.error(
+      "Error fetching today's bookings:",
+      todayResult.error.message,
+    );
   }
 
   // Return the counts, defaulting to 0 if null or on error

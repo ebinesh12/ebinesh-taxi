@@ -64,7 +64,7 @@ export default function RegisterForm() {
           <span
             className={cn(
               "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-               "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
+              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
             )}
           >
             Create an Account
@@ -119,7 +119,7 @@ export default function RegisterForm() {
             disabled={isSubmitting}
             className={cn(
               "w-full px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-               "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
+              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
             )}
           >
             {isSubmitting ? "Registering..." : "Register"}

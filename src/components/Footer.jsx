@@ -155,7 +155,8 @@ const Footer = () => {
         <div className="container mx-auto px-4">
           <div className="border-t border-gray-800 pt-6 text-center text-muted-foreground">
             <p>
-              &copy; {new Date().getFullYear()}  <Link href="/admin">Ebin Taxi.</Link> All Rights Reserved.
+              &copy; {new Date().getFullYear()}{" "}
+              <Link href="/admin">Ebin Taxi.</Link> All Rights Reserved.
             </p>
           </div>
         </div>

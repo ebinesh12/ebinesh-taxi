@@ -43,7 +43,7 @@ async function getBookings(): Promise<BookingWithVehicle[]> {
       trip_date,
       booking_status,
       vehicles (name)
-    `
+    `,
     )
     .order("created_at", { ascending: false }); // Show newest first
 
@@ -59,7 +59,7 @@ export default async function ManageBookingsPage() {
 
   // Helper to determine badge color based on status
   const getStatusVariant = (
-    status: string
+    status: string,
   ): "bg-green-500" | "bg-yellow-400" | "bg-red-400" => {
     switch (status) {
       case "confirmed":
@@ -104,14 +104,14 @@ export default async function ManageBookingsPage() {
                       <TableCell className="font-medium">
                         {booking.customer_name}
                       </TableCell>
-                      <TableCell>
-                        {booking.vehicles?.name ?? "N/A"}
-                      </TableCell>
+                      <TableCell>{booking.vehicles?.name ?? "N/A"}</TableCell>
                       <TableCell>
                         {new Date(booking.trip_date).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        <Badge className={getStatusVariant(booking.booking_status)}>
+                        <Badge
+                          className={getStatusVariant(booking.booking_status)}
+                        >
                           {booking.booking_status}
                         </Badge>
                       </TableCell>

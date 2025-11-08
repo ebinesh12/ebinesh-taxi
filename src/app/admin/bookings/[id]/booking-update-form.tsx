@@ -28,7 +28,9 @@ export function BookingUpdateForm({ booking }: BookingUpdateFormProps) {
     if (result?.error) {
       toast.error("Update Failed", { description: result.error });
     } else {
-      toast.success("Status Updated", { description: "The booking status has been successfully updated." });
+      toast.success("Status Updated", {
+        description: "The booking status has been successfully updated.",
+      });
     }
   };
 

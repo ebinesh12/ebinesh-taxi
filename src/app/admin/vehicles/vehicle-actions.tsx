@@ -67,7 +67,7 @@ export function VehicleActions({ vehicleId }: VehicleActionsProps) {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             {/* The form is now inside the dialog */}
             <form action={handleDeleteAction}>
-              <AlertDialogAction type="submit" >
+              <AlertDialogAction type="submit">
                 Yes, delete vehicle
               </AlertDialogAction>
             </form>

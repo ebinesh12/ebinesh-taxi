@@ -11,10 +11,10 @@ export async function POST(req) {
     if (!username || !email || !password) {
       return NextResponse.json(
         { message: "Please enter all fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
-    
+
     // Perform sign-up with Supabase
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -27,21 +27,18 @@ export async function POST(req) {
     });
 
     if (error) {
-      return NextResponse.json(
-        { message: error.message },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: error.message }, { status: 400 });
     }
 
     return NextResponse.json(
       { message: "User created successfully", user: data.user },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Error creating user:", error);
     return NextResponse.json(
       { message: "Error creating user", error: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

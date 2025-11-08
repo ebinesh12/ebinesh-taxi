@@ -33,49 +33,49 @@ export type BookingDetail = {
   } | null;
 };
 
-
 export default function BookingDetailPage() {
   const params = useParams();
   const id = params?.id as string; // Get ID from URL and assert as string
-    // State to hold vehicle data, loading status, and errors
-    const [booking, setBooking] = useState<BookingDetail | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-    const [currentStatus, setCurrentStatus] = useState<"pending"|"confirmed"|"cancelled">("pending");
+  // State to hold vehicle data, loading status, and errors
+  const [booking, setBooking] = useState<BookingDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentStatus, setCurrentStatus] = useState<
+    "pending" | "confirmed" | "cancelled"
+  >("pending");
 
+  useEffect(() => {
+    if (!id) {
+      setError("No booking ID provided.");
+      setLoading(false);
+      return;
+    }
 
-    useEffect(() => {
-      if (!id) {
-        setError("No booking ID provided.");
-        setLoading(false);
-        return;
-      }
-  
-      const fetchBooking = async () => {
-        try {
-          const { data, error } = await supabase
-    .from("bookings")
-    .select("*, vehicles(name)")
-    .eq("booking_id", id)
-    .single();
-  
-          if (error) {
-            throw new Error("Booking not found or failed to fetch.");
-          }
-  
-          if (data) {
-            setBooking(data);
-            setCurrentStatus(data.booking_status);
-          }
-        } catch (err: any) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
+    const fetchBooking = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("bookings")
+          .select("*, vehicles(name)")
+          .eq("booking_id", id)
+          .single();
+
+        if (error) {
+          throw new Error("Booking not found or failed to fetch.");
         }
-      };
-  
-       fetchBooking();
-    }, [id]); // Re-run the effect if the ID changes
+
+        if (data) {
+          setBooking(data);
+          setCurrentStatus(data.booking_status);
+        }
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooking();
+  }, [id]); // Re-run the effect if the ID changes
 
   // Render loading state
   if (loading) {
@@ -93,7 +93,13 @@ export default function BookingDetailPage() {
   }
 
   // Helper component for displaying details cleanly
-  const DetailItem = ({ label, value }: { label: string; value: string | number }) => (
+  const DetailItem = ({
+    label,
+    value,
+  }: {
+    label: string;
+    value: string | number;
+  }) => (
     <div>
       <p className="text-sm font-medium text-muted-foreground">{label}</p>
       <p className="text-lg font-semibold">{value}</p>
@@ -104,9 +110,7 @@ export default function BookingDetailPage() {
     <div className="p-4 sm:p-8 max-w-4xl mx-auto">
       <Card>
         <CardHeader>
-          <CardTitle className="text-3xl">
-            Booking Details
-          </CardTitle>
+          <CardTitle className="text-3xl">Booking Details</CardTitle>
           <CardDescription className="font-mono">
             Ref: {booking.booking_ref}
           </CardDescription>
@@ -115,17 +119,30 @@ export default function BookingDetailPage() {
           <DetailItem label="Customer Name" value={booking.customer_name} />
           <DetailItem label="Customer Mobile" value={booking.customer_mobile} />
           <DetailItem label="Customer Email" value={booking.customer_email} />
-          <DetailItem label="Vehicle" value={booking.vehicles?.name ?? 'N/A'} />
+          <DetailItem label="Vehicle" value={booking.vehicles?.name ?? "N/A"} />
           <DetailItem label="Pickup Location" value={booking.pickup_location} />
           <DetailItem label="Drop-off Location" value={booking.drop_location} />
-          <DetailItem label="Trip Date" value={new Date(booking.trip_date).toLocaleDateString()} />
+          <DetailItem
+            label="Trip Date"
+            value={new Date(booking.trip_date).toLocaleDateString()}
+          />
           <DetailItem label="Trip Time" value={booking.trip_time} />
-          <DetailItem label="Estimated Fare" value={`$${booking.estimated_fare.toFixed(2)}`} />
-          <DetailItem label="Submitted On" value={new Date(booking.created_at).toLocaleString()} />
+          <DetailItem
+            label="Estimated Fare"
+            value={`$${booking.estimated_fare.toFixed(2)}`}
+          />
+          <DetailItem
+            label="Submitted On"
+            value={new Date(booking.created_at).toLocaleString()}
+          />
         </CardContent>
         <CardFooter>
           {/* Client component to handle the status update logic */}
-          <BookingUpdateForm booking={booking} currentStatus={currentStatus} setCurrentStatus={setCurrentStatus} />
+          <BookingUpdateForm
+            booking={booking}
+            currentStatus={currentStatus}
+            setCurrentStatus={setCurrentStatus}
+          />
         </CardFooter>
       </Card>
     </div>

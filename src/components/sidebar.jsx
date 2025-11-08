@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, List, Car } from "lucide-react";
-// You can add more icons as needed
+import Logout  from "./Logout";
 
 const navItems = [
   { href: "/admin", icon: Home, label: "Dashboard" },
@@ -32,6 +32,7 @@ export function Sidebar() {
             <span>{item.label}</span>
           </Link>
         ))}
+        <Logout />
       </nav>
     </aside>
   );

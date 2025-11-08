@@ -1,6 +1,7 @@
+"use client";
 import Link from "next/link";
 import { supabase } from "@/utils/supabase/client";
-
+import Image from "next/image";
 // Import Shadcn UI Components
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +24,7 @@ import { PlusCircle } from "lucide-react";
 
 // Import the new client component for actions
 import { VehicleActions } from "./vehicle-actions";
+import { useState, useEffect } from "react";
 
 // Define a type for our vehicle data for better TypeScript support
 export type Vehicle = {
@@ -32,21 +34,58 @@ export type Vehicle = {
   rate_per_km: number;
   base_fare: number;
   status: "ACTIVE" | "INACTIVE";
+  vehicle_image?: string; // The bytea field will be a hex string
 };
 
-// Async function to fetch vehicles from Supabase
-async function getVehicles(): Promise<Vehicle[]> {
-  const { data, error } = await supabase.from("vehicles").select("*");
+export default function ManageVehicles() {
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  // const [imagePreview, setImagePreview] = useState<string>("/#");
 
-  if (error) {
-    console.error("Error fetching vehicles:", error);
-    return []; // Return an empty array on error
+  const imagePreview = (vehicle_image: string | undefined) => {
+    if (vehicle_image) {
+      // The bytea string from PostgREST is prefixed with "\\x"
+      const hex = vehicle_image?.substring(2);
+      const uint8Array = new Uint8Array(
+        hex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
+      );
+      const blob = new Blob([uint8Array], { type: "image/jpeg" }); // Assume a default type or store it in DB
+      return URL.createObjectURL(blob);
+    }
+  };
+
+  useEffect(() => {
+    const fetchVehicles = async () => {
+      try {
+        const { data, error } = await supabase.from("vehicles").select("*"); // .single() is great for getting one record or an error
+
+        if (error) {
+          throw new Error("Vehicle not found or failed to fetch.");
+        }
+
+        if (data) {
+          setVehicles(data);
+        }
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchVehicles();
+  }, []);
+
+  // Render loading state
+  if (loading) {
+    return <div className="p-8 text-center">Loading vehicle details...</div>;
   }
-  return data || [];
-}
 
-export default async function ManageVehicles() {
-  const vehicles = await getVehicles();
+  // Render error state
+  if (error) {
+    return <div className="p-8 text-center text-red-500">Error: {error}</div>;
+  }
 
   return (
     <div className="p-4 sm:p-8">
@@ -73,6 +112,7 @@ export default async function ManageVehicles() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
+                  <TableHead>Image</TableHead>
                   <TableHead>Service Type</TableHead>
                   <TableHead>Rate/KM</TableHead>
                   <TableHead>Base Fare</TableHead>
@@ -86,6 +126,20 @@ export default async function ManageVehicles() {
                     <TableRow key={vehicle.id}>
                       <TableCell className="font-medium">
                         {vehicle.name}
+                      </TableCell>
+                      <TableCell className="py-4">
+                        {vehicle?.vehicle_image ? (
+                          <Image
+                            src={imagePreview(vehicle?.vehicle_image) ?? "/"}
+                            alt="Vehicle Image Preview"
+                            // layout="fill"
+                            width={75}
+                            height={100}
+                            objectFit="contain"
+                          />
+                        ) : (
+                          "no image"
+                        )}
                       </TableCell>
                       <TableCell>{vehicle.service_type}</TableCell>
                       <TableCell>${vehicle.rate_per_km.toFixed(2)}</TableCell>
