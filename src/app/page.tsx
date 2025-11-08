@@ -13,13 +13,11 @@ import {
 } from "@/components/ui/card";
 
 export default function Home() {
-
   return (
     <div>
       <Header />
       <div className="flex flex-col min-h-screen">
         <main className="flex flex-col flex-1">
-
           {/* Hero Section */}
           <div className="relative">
             <div className="h-96 w-full">
@@ -230,7 +228,6 @@ export default function Home() {
               </div>
               <h2 className="text-4xl font-medium">Our Drivers</h2>
             </div>
-
           </div>
         </main>
       </div>

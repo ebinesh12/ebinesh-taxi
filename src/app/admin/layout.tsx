@@ -1,5 +1,4 @@
-
-import { Sidebar } from "@/components/Sidebars";
+import { Sidebar } from "@/components/Sidebar";
 // import { ModeToggle } from "@/components/mode-toggle"
 
 export default function AdminLayout({

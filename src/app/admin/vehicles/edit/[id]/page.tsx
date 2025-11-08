@@ -115,13 +115,14 @@ export default function EditVehiclePage() {
 
   // Form submission handler to provide user feedback
   const handleUpdate = async (formData: FormData) => {
+    interface AddVehicleResult {
+      error?: string; // or Error if you use Error object
+      // include other properties if your function returns more info
+    }
 
-       interface AddVehicleResult {
-  error?: string; // or Error if you use Error object
-  // include other properties if your function returns more info
-}
-
-    const result = await updateVehicle(formData)as unknown as AddVehicleResult;
+    const result = (await updateVehicle(
+      formData,
+    )) as unknown as AddVehicleResult;
 
     // Assuming your server action returns an object with an error or success message
     if (result?.error) {

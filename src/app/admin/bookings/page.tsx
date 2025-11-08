@@ -46,7 +46,6 @@ async function getBookings(): Promise<BookingWithVehicle[]> {
     `,
     )
     .order("created_at", { ascending: false }); // Show newest first
-
   if (error) {
     console.error("Error fetching bookings:", error);
     return [];
@@ -59,10 +58,7 @@ async function getBookings(): Promise<BookingWithVehicle[]> {
     customer_name: row.customer_name,
     trip_date: row.trip_date,
     booking_status: row.booking_status,
-    vehicles:
-      Array.isArray(row.vehicles) && row.vehicles.length
-        ? { name: row.vehicles[0].name }
-        : null,
+    vehicles: row.vehicles,
   }));
 
   return normalized;

@@ -44,11 +44,11 @@ export default function AddVehiclePage() {
     }
 
     interface AddVehicleResult {
-  error?: string; // or Error if you use Error object
-  // include other properties if your function returns more info
-}
+      error?: string; // or Error if you use Error object
+      // include other properties if your function returns more info
+    }
 
-    const result = await addVehicle(formData) as unknown as AddVehicleResult;
+    const result = (await addVehicle(formData)) as unknown as AddVehicleResult;
 
     // Check the result from the server action
     if (result?.error) {

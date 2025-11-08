@@ -40,9 +40,6 @@ export default function BookingDetailPage() {
   const [booking, setBooking] = useState<BookingDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentStatus, setCurrentStatus] = useState<
-    "pending" | "confirmed" | "cancelled"
-  >("pending");
 
   useEffect(() => {
     if (!id) {
@@ -65,7 +62,6 @@ export default function BookingDetailPage() {
 
         if (data) {
           setBooking(data);
-          setCurrentStatus(data.booking_status);
         }
       } catch (err: unknown) {
         if (err instanceof Error) {
