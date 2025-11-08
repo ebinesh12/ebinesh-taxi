@@ -43,7 +43,7 @@ export default function LoginForm() {
 
       if (res.status === 200 && res.data.user) {
         dispatch(setUser(res.data.user));
-        router.push("/admin");
+        router.replace("/admin");
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
