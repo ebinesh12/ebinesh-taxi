@@ -127,7 +127,7 @@ export default function LoginForm() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-gray-600 dark:text-gray-300">
-          I don't have an account?{" "}
+          I don&apos;t have an account?{" "}
           <Link
             href="/auth/register"
             className={cn(

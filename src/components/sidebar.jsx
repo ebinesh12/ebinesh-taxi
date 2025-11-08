@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Home, List, Car } from "lucide-react";
-import Logout  from "./Logout";
+import Logout from "./Logout";
 
 const navItems = [
   { href: "/admin", icon: Home, label: "Dashboard" },

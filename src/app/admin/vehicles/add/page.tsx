@@ -43,7 +43,12 @@ export default function AddVehiclePage() {
       return; // Stop if the file input is there but no file is chosen
     }
 
-    const result = await addVehicle(formData);
+    interface AddVehicleResult {
+  error?: string; // or Error if you use Error object
+  // include other properties if your function returns more info
+}
+
+    const result = await addVehicle(formData) as unknown as AddVehicleResult;
 
     // Check the result from the server action
     if (result?.error) {

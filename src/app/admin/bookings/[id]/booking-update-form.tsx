@@ -45,7 +45,9 @@ export function BookingUpdateForm({ booking }: BookingUpdateFormProps) {
           name="status"
           required
           value={currentStatus}
-          onValueChange={(value) => setCurrentStatus(value as any)}
+          onValueChange={(value) =>
+            setCurrentStatus(value as BookingDetail["booking_status"])
+          }
         >
           <SelectTrigger>
             <SelectValue placeholder="Select new status" />

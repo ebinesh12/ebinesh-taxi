@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { removeUser } from "@/redux/userSlice";
 import { Button } from "@/components/ui/button";
-import {toast} from "sonner";
+import { toast } from "sonner";
 import { LogOut } from "lucide-react";
 
 export default function LogoutButton() {
@@ -42,7 +42,12 @@ export default function LogoutButton() {
   };
 
   return (
-    <Button onClick={handleLogout} disabled={isLoggingOut} variant="ghost" className="w-full justify-start">
+    <Button
+      onClick={handleLogout}
+      disabled={isLoggingOut}
+      variant="ghost"
+      className="w-full justify-start"
+    >
       <LogOut className="mr-2 h-4 w-4" />
       {isLoggingOut ? "Logging out..." : "Logout"}
     </Button>

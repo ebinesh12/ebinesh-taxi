@@ -6,7 +6,14 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase/client";
 
 export default function BookingVerification() {
-  const [tripDetails, setTripDetails] = useState(null);
+  const [tripDetails, setTripDetails] = useState(() => {
+    try {
+      const details = sessionStorage.getItem("tripDetails");
+      return details ? JSON.parse(details) : null;
+    } catch (e) {
+      return null;
+    }
+  });
   const [name, setName] = useState("");
   const [mobile, setMobile] = useState("");
   const [email, setEmail] = useState("");
@@ -14,13 +21,10 @@ export default function BookingVerification() {
   const router = useRouter();
 
   useEffect(() => {
-    const details = sessionStorage.getItem("tripDetails");
-    if (details) {
-      setTripDetails(JSON.parse(details));
-    } else {
+    if (!tripDetails) {
       router.push("/"); // Redirect if no details are found
     }
-  }, [router]);
+  }, [tripDetails, router]);
 
   const generateBookingId = () => `TXN${Date.now()}`;
 

@@ -3,13 +3,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Card,
   CardContent,
@@ -18,104 +12,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-// const fetchTopDrivers = async () => {
-//   try {
-//     const response = await axios.get(
-//       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/top-drivers`
-//     );
-//     return response.data;
-//   } catch (error) {
-//     console.error("Error fetching top drivers:", error);
-//     return [];
-//   }
-// };
-
 export default function Home() {
-  const [topDrivers, setTopDrivers] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const topDriverData = await fetchTopDrivers();
-  //     setTopDrivers(topDriverData);
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   return (
     <div>
       <Header />
       <div className="flex flex-col min-h-screen">
         <main className="flex flex-col flex-1">
-          {/* Search Section */}
-          {/* <div id="searchSection" className="mt-20 relative h-auto p-4 lg:p-0">
-                <form className="max-w-6xl mx-auto">
-                  <div className="bg-black bg-opacity-50 p-5 rounded-lg shadow-lg">
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-5">
-                      <RadioGroup defaultValue="txai" className="flex">
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="txai" id="yellow-radio" />
-                          <Label htmlFor="yellow-radio" className="text-white">TXAI Service</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="bus" id="red-radio" />
-                          <Label htmlFor="red-radio" className="text-white">BUS Service</Label>
-                        </div>
-                      </RadioGroup>
-                    </div>
-      
-                    <div className="flex flex-wrap items-center justify-center gap-4">
-                      <Input type="text" placeholder="Start Location" className="w-full sm:w-64" />
-                      <Button type="button" variant="outline">
-                        <svg
-                          className="w-4 h-4"
-                          aria-hidden="true"
-                          fill="none"
-                          viewBox="0 0 16 14"
-                        >
-                          <path
-                            stroke="currentColor"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M11 10H1m0 0 3-3m-3 3 3 3m1-9h10m0 0-3 3m3-3-3-3"
-                          />
-                        </svg>
-                      </Button>
-                      <Input type="text" placeholder="End Location" className="w-full sm:w-64" />
-                      <Input type="date" className="w-full sm:w-auto" />
-                      <Input type="time" className="w-full sm:w-auto" />
-                      <Button className="w-full sm:w-36">Search</Button>
-                    </div>
-      
-                    <div className="flex flex-wrap items-center justify-center gap-4 mt-5">
-                      <span className="text-base font-medium text-gray-300 mr-5">
-                        More options :
-                      </span>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="option1" />
-                        <Label htmlFor="option1" className="text-gray-300">Affordable</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="option2" />
-                        <Label htmlFor="option2" className="text-gray-300">Availability</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="option3" />
-                        <Label htmlFor="option3" className="text-gray-300">Nearby</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="option4" />
-                        <Label htmlFor="option4" className="text-gray-300">High Rating</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox id="option5" />
-                        <Label htmlFor="option5" className="text-gray-300">Popular</Label>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div> */}
 
           {/* Hero Section */}
           <div className="relative">
@@ -327,59 +230,7 @@ export default function Home() {
               </div>
               <h2 className="text-4xl font-medium">Our Drivers</h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {topDrivers?.map((driver) => (
-                <Card key={driver.id} className="overflow-hidden">
-                  <CardHeader className="p-0">
-                    <Image
-                      src={driver.photoURL}
-                      width={300}
-                      height={400}
-                      className="object-cover w-full h-80"
-                      alt={`${driver.firstName} ${driver.lastName}`}
-                    />
-                  </CardHeader>
-                  <CardContent className="p-4 bg-slate-800 text-white">
-                    <div className="flex justify-between items-center mb-2">
-                      {/* ReactStars can be added here if needed */}
-                      <div className="flex space-x-2">
-                        <a href="#">
-                          <Image
-                            width="20"
-                            height="20"
-                            src="https://img.icons8.com/ios-glyphs/30/ffffff/facebook-new.png"
-                            alt="facebook-new"
-                          />
-                        </a>
-                        <a href="#">
-                          <Image
-                            width="20"
-                            height="20"
-                            src="https://img.icons8.com/ios-glyphs/30/ffffff/twitter--v1.png"
-                            alt="twitter--v1"
-                          />
-                        </a>
-                        <a href="#">
-                          <Image
-                            width="20"
-                            height="20"
-                            src="https://img.icons8.com/material-outlined/24/ffffff/instagram-new--v1.png"
-                            alt="instagram-new--v1"
-                          />
-                        </a>
-                      </div>
-                    </div>
-                    <CardTitle className="text-white">
-                      {driver.firstName} {driver.lastName}
-                    </CardTitle>
-                    <div className="flex justify-between text-sm mt-2">
-                      <p>Driver</p>
-                      <p>{driver.contactNumber}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+
           </div>
         </main>
       </div>

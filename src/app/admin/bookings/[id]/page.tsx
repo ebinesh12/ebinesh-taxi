@@ -67,8 +67,12 @@ export default function BookingDetailPage() {
           setBooking(data);
           setCurrentStatus(data.booking_status);
         }
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError(String(err));
+        }
       } finally {
         setLoading(false);
       }
@@ -138,11 +142,7 @@ export default function BookingDetailPage() {
         </CardContent>
         <CardFooter>
           {/* Client component to handle the status update logic */}
-          <BookingUpdateForm
-            booking={booking}
-            currentStatus={currentStatus}
-            setCurrentStatus={setCurrentStatus}
-          />
+          <BookingUpdateForm booking={booking} />
         </CardFooter>
       </Card>
     </div>

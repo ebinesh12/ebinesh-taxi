@@ -83,14 +83,18 @@ export default function EditVehiclePage() {
             // The bytea string from PostgREST is prefixed with "\\x"
             const hex = data.vehicle_image.substring(2);
             const uint8Array = new Uint8Array(
-              hex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
+              hex.match(/.{1,2}/g)!.map((byte: string) => parseInt(byte, 16)),
             );
             const blob = new Blob([uint8Array], { type: "image/jpeg" }); // Assume a default type or store it in DB
             setImagePreview(URL.createObjectURL(blob));
           }
         }
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError(String(err));
+        }
       } finally {
         setLoading(false);
       }
@@ -111,7 +115,13 @@ export default function EditVehiclePage() {
 
   // Form submission handler to provide user feedback
   const handleUpdate = async (formData: FormData) => {
-    const result = await updateVehicle(formData);
+
+       interface AddVehicleResult {
+  error?: string; // or Error if you use Error object
+  // include other properties if your function returns more info
+}
+
+    const result = await updateVehicle(formData)as unknown as AddVehicleResult;
 
     // Assuming your server action returns an object with an error or success message
     if (result?.error) {

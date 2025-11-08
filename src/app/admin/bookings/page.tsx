@@ -51,7 +51,21 @@ async function getBookings(): Promise<BookingWithVehicle[]> {
     console.error("Error fetching bookings:", error);
     return [];
   }
-  return data || [];
+
+  // Supabase returns related rows as arrays; normalize to a single vehicle object or null
+  const normalized: BookingWithVehicle[] = (data || []).map((row: any) => ({
+    booking_id: row.booking_id,
+    booking_ref: row.booking_ref,
+    customer_name: row.customer_name,
+    trip_date: row.trip_date,
+    booking_status: row.booking_status,
+    vehicles:
+      Array.isArray(row.vehicles) && row.vehicles.length
+        ? { name: row.vehicles[0].name }
+        : null,
+  }));
+
+  return normalized;
 }
 
 export default async function ManageBookingsPage() {
