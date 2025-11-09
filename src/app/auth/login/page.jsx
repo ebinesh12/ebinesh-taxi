@@ -18,14 +18,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/userSlice";
+// import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [serverError, setServerError] = useState("");
-  const router = useRouter();
   const dispatch = useDispatch();
+  // const router = useRouter();
 
   const {
     register,
@@ -64,8 +64,8 @@ export default function LoginForm() {
         <CardTitle>
           <span
             className={cn(
-              "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
+              "md:w-1/4 text-xl bg-clip-text text-transparent text-left font-semibold",
+              "bg-gradient-to-r from-fuchsia-500 to-indigo-700",
             )}
           >
             Login to Your Account
@@ -120,7 +120,7 @@ export default function LoginForm() {
             disabled={isSubmitting}
             className={cn(
               "w-full px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
+              "bg-gradient-to-r from-fuchsia-500 to-indigo-700",
             )}
           >
             {isSubmitting ? "Logging in..." : "Login"}
@@ -134,7 +134,7 @@ export default function LoginForm() {
             href="/auth/register"
             className={cn(
               "font-semibold bg-clip-text text-transparent hover:underline",
-              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
+              "bg-gradient-to-r from-fuchsia-500 to-indigo-700",
             )}
           >
             Register

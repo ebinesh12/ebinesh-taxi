@@ -166,10 +166,10 @@ export default function ManageVehicles() {
                       {vehicle.service_type}
                     </TableCell>
                     <TableCell className="px-6">
-                      ${vehicle.rate_per_km.toFixed(2)}
+                      ₹ {vehicle.rate_per_km.toFixed(2)}
                     </TableCell>
                     <TableCell className="px-6">
-                      ${vehicle.base_fare.toFixed(2)}
+                      ₹ {vehicle.base_fare.toFixed(2)}
                     </TableCell>
                     <TableCell className="px-6">
                       <Badge

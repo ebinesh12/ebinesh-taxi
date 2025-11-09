@@ -5,21 +5,10 @@ import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { supabase } from "@/utils/supabase/client";
-import * as z from "zod";
-
+import { searchParamsSchema } from "@/services/schema";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-
-// Define a Zod schema for validating the search parameters
-const searchParamsSchema = z.object({
-  pickup: z.string().min(1, "Pickup location is required."),
-  drop: z.string().min(1, "Drop location is required."),
-  serviceType: z.enum(["One-Way", "Round-Trip"]),
-  // Add other params like date and time if you need them for validation
-  date: z.string().optional(),
-  time: z.string().optional(),
-});
 
 // Define a type for our vehicle data for better type safety
 type Vehicle = {
@@ -118,7 +107,7 @@ function FareEstimationContent() {
     return (
       <div className="text-center mt-8 text-red-600">
         <p>{error}</p>
-        <Button onClick={() => router.back()} className="bg-yellow-400 mt-4">
+        <Button onClick={() => router.back()} className="bg-gradient-to-r from-fuchsia-500 to-indigo-700 mt-4">
           Go Back
         </Button>
       </div>
@@ -127,50 +116,62 @@ function FareEstimationContent() {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
-      <h2 className="text-3xl font-bold mb-6 text-center md:text-left text-yellow-400">
+      <h2 className="text-3xl font-bold mb-6 text-center md:text-left bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
         Available Rides
       </h2>
       <div className="space-y-4">
-        {vehicles.length > 0 ? (
-          vehicles.map((vehicle) => (
-            <Card key={vehicle.id} className="w-full">
-              <CardContent className="p-4 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <Image
-                    src={
-                      vehicle.image_url ||
-                      "https://picsum.photos/id/183/1000/600"
-                    } // Use a local placeholder
-                    alt={vehicle.name}
-                    width={100}
-                    height={100}
-                    className="w-24 h-24 object-cover rounded-md"
-                  />
-                  <div>
-                    <CardTitle className="text-xl font-semibold">
-                      {vehicle.name}
-                    </CardTitle>
-                    <p className="text-muted-foreground">
-                      {vehicle.service_type}
-                    </p>
-                  </div>
-                </div>
-                <div className="text-right flex flex-col items-end">
-                  <p className="text-2xl font-bold mb-2">
-                    ₹{vehicle.estimatedFare?.toFixed(2)}
-                  </p>
-                  <Button onClick={() => handleBooking(vehicle)} className="bg-yellow-400 hover:bg-yellow-500">
-                    Book Now
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        ) : (
-          <p className="text-center text-gray-500">
-            No vehicles available for the selected criteria.
-          </p>
-        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  {vehicles.length > 0 ? (
+    vehicles.map((vehicle) => (
+      <Card key={vehicle.id} className="p-0 w-full flex flex-col">
+        <CardContent className="p-4 flex flex-col items-center text-center flex-grow">
+          {/* Image is now at the top */}
+          <div className="relative w-full h-48 mb-4">
+            <Image
+              src={
+                vehicle.image_url ||
+                "https://picsum.photos/id/183/1000/600"
+              }
+              alt={vehicle.name}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-md"
+            />
+          </div>
+
+          {/* Vehicle Name and Service Type */}
+          <div className="flex flex-row items-center gap-x-8">
+            <CardTitle className="text-xl font-semibold">
+              {vehicle.name}
+            </CardTitle>
+            <p className="text-muted-foreground">
+              {vehicle.service_type}
+            </p>
+          </div>
+
+          {/* Fare and Booking Button */}
+          <div className="mt-4 w-full">
+            <p className="text-2xl font-bold mb-2">
+              ₹{vehicle.estimatedFare?.toFixed(2)}
+            </p>
+            <Button
+              onClick={() => handleBooking(vehicle)}
+              className="w-full bg-gradient-to-r from-fuchsia-500 to-indigo-700 hover:from-fuchsia-500/75 hover:to-indigo-700/75"
+            >
+              Book Now
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    ))
+  ) : (
+    <div className="col-span-full text-center text-gray-500">
+      <p>
+        No vehicles available for the selected criteria.
+      </p>
+    </div>
+  )}
+</div>
       </div>
     </div>
   );

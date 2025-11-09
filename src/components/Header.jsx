@@ -33,7 +33,7 @@ const Header = () => {
     <>
       <header className="sticky px-8 top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between">
-          <Link href="/" className="text-xl text-yellow-400 font-bold">
+          <Link href="/" className="tracking-wider text-xl bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700 font-bold">
             EBIN TAXI
           </Link>
 
@@ -51,7 +51,7 @@ const Header = () => {
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>
-                  <SheetTitle className="text-primary">Ebin Taxi</SheetTitle>
+                  <SheetTitle className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">Ebin Taxi</SheetTitle>
                 </SheetHeader>
                 <div className="mt-8">
                   <NavLinks isMobile />

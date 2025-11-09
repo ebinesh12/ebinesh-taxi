@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -44,6 +45,7 @@ export default function RegisterForm() {
       const res = await axios.post("/api/v1/signup", formData);
 
       if (res.status === 201) {
+        toast.success("Registration successful! Verify Mail, then Log in.");
         router.push("/auth/login");
       }
     } catch (error) {
@@ -63,8 +65,8 @@ export default function RegisterForm() {
         <CardTitle>
           <span
             className={cn(
-              "md:w-1/4 bg-clip-text text-transparent text-left font-semibold",
-              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
+              "md:w-1/4 text-xl bg-clip-text text-transparent text-left font-semibold",
+              "bg-gradient-to-r from-fuchsia-500 to-indigo-700",
             )}
           >
             Create an Account
@@ -119,7 +121,7 @@ export default function RegisterForm() {
             disabled={isSubmitting}
             className={cn(
               "w-full px-6 py-3 rounded-full font-semibold text-white shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-300",
-              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
+              "bg-gradient-to-r from-fuchsia-500 to-indigo-700",
             )}
           >
             {isSubmitting ? "Registering..." : "Register"}
@@ -133,7 +135,7 @@ export default function RegisterForm() {
             href="/auth/login"
             className={cn(
               "font-semibold bg-clip-text text-transparent hover:underline",
-              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400",
+              "bg-gradient-to-r from-fuchsia-500 to-indigo-700",
             )}
           >
             Log in

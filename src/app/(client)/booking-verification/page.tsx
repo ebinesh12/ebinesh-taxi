@@ -26,19 +26,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
-// Zod schema for the customer details form
-const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  mobile: z
-    .string()
-    .min(10, { message: "Mobile number must be at least 10 digits." }),
-  email: z
-    .string()
-    .email({ message: "Invalid email address." })
-    .optional()
-    .or(z.literal("")),
-});
+import { verifySchema } from "@/services/schema";
 
 // Define a type for our trip details for type safety
 type TripDetails = {
@@ -72,8 +60,8 @@ export default function BookingVerificationPage() {
   }, [router]);
 
   // Initialize react-hook-form
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof verifySchema>>({
+    resolver: zodResolver(verifySchema),
     defaultValues: {
       name: "",
       mobile: "",
@@ -86,7 +74,7 @@ export default function BookingVerificationPage() {
   const generateBookingId = () => `TXN${Date.now()}`;
 
   // This function only runs if the form validation passes
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof verifySchema>) {
     if (!tripDetails) {
       setError("Trip details are missing. Please start over.");
       return;
@@ -137,8 +125,12 @@ export default function BookingVerificationPage() {
     <div className="container mx-auto p-4 md:p-8 max-w-2xl">
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="text-xl text-yellow-400 font-bold">Confirm Your Booking</CardTitle>
-          <CardDescription className="muted">Review your trip summary below.</CardDescription>
+          <CardTitle className="text-xl bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700 font-bold">
+            Confirm Your Booking
+          </CardTitle>
+          <CardDescription className="muted">
+            Review your trip summary below.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           <p>
@@ -163,7 +155,9 @@ export default function BookingVerificationPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-xl text-yellow-400">Your Details</CardTitle>
+          <CardTitle className="text-xl bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+            Your Details
+          </CardTitle>
           <CardDescription>
             Please provide your contact information to finalize the booking.
           </CardDescription>
@@ -221,7 +215,11 @@ export default function BookingVerificationPage() {
               {error && (
                 <p className="text-sm font-medium text-destructive">{error}</p>
               )}
-              <Button type="submit" disabled={isSubmitting} className="bg-yellow-400 hover:bg-yellow-500 w-full">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="bg-gradient-to-r from-fuchsia-500 to-indigo-700 w-full"
+              >
                 {isSubmitting && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}

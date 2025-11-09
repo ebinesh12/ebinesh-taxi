@@ -22,13 +22,13 @@ export default function AdminLayout({ children }) {
           <div
             className={cn(
               "absolute top-0 right-0 w-[350px] h-[350px] opacity-20 rounded-full blur-3xl animate-pulse",
-              "bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400 dark:from-blue-500 dark:via-indigo-600 dark:to-cyan-500",
+              "bg-gradient-to-r from-fuchsia-500 to-indigo-700 dark:from-blue-500 dark:via-indigo-600 dark:to-cyan-500",
             )}
           ></div>
           {/* Right Blob */}
           <div
             className="absolute bottom-0 left-0 w-[350px] h-[350px]
-                                bg-gradient-to-r from-yellow-300 via-amber-400 to-orange-400
+                                bg-gradient-to-r from-fuchsia-500 to-indigo-700
                                 dark:from-indigo-500 dark:via-blue-600 dark:to-cyan-500
                                 opacity-20 rounded-full blur-3xl animate-pulse"
           ></div>

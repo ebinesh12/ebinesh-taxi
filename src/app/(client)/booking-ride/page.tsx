@@ -24,29 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Clock } from "lucide-react";
-
-// Zod schema for form validation
-const formSchema = z
-  .object({
-    pickup: z.string().min(1, { message: "Pickup location is required." }),
-    drop: z.string().min(1, { message: "Drop location is required." }),
-    date: z.string().min(1, { message: "Date is required." }),
-    time: z.string().min(1, { message: "Time is required." }),
-  })
-  .refine(
-    (data) => {
-      const selectedDate = new Date(`${data.date}T${data.time}`);
-      const now = new Date();
-      // Allow a few minutes of grace period for the time selection
-      now.setMinutes(now.getMinutes() - 5);
-      return selectedDate >= now;
-    },
-    {
-      message: "Cannot select a past date or time.",
-      path: ["time"],
-    },
-  );
-
+import { rideSchema } from "@/services/schema";
 // --- Custom Time Picker Component ---
 interface TimePickerProps {
   value: string;
@@ -112,8 +90,8 @@ export default function RideFinderForm() {
     setMaxDate(formatDate(oneMonthFromNow));
   }, []);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof rideSchema>>({
+    resolver: zodResolver(rideSchema),
     defaultValues: {
       pickup: "",
       drop: "",
@@ -122,7 +100,7 @@ export default function RideFinderForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof rideSchema>) {
     const queryParams = new URLSearchParams({
       ...values,
       serviceType,
@@ -143,7 +121,7 @@ export default function RideFinderForm() {
               onClick={() => setServiceType("One-Way")}
               className={`px-4 py-2 text-lg font-semibold rounded-none ${
                 serviceType === "One-Way"
-                  ? "border-b-2 border-yellow-400 text-yellow-400"
+                  ? "border-b-2 border-indigo-400 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700"
                   : "text-gray-500"
               }`}
             >
@@ -154,7 +132,7 @@ export default function RideFinderForm() {
               onClick={() => setServiceType("Round-Trip")}
               className={`px-4 py-2 text-lg font-semibold rounded-none ${
                 serviceType === "Round-Trip"
-                  ? "border-b-2 border-yellow-400 text-yellow-400"
+                  ? "border-b-2 border-indigo-400 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700"
                   : "text-gray-500"
               }`}
             >
@@ -227,7 +205,7 @@ export default function RideFinderForm() {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-yellow-400 text-white font-bold hover:bg-yellow-500"
+                className="w-full bg-gradient-to-r from-fuchsia-500 to-indigo-700 text-white font-bold hover:from-fuchsia-500/80 hover:to-indigo-700/80"
               >
                 Find My Ride
               </Button>

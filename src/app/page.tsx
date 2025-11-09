@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -26,7 +27,7 @@ export default function Home() {
               <div className="container mx-auto px-4 text-white">
                 <div className="w-full md:w-1/2">
                   <div className="flex items-center mb-5">
-                    <span className="w-2 h-8 bg-yellow-400 mr-3"></span>
+                    <span className="w-2 h-8 bg-indigo-500 mr-3"></span>
                     <p className="text-sm uppercase tracking-widest">
                       Taxi Services
                     </p>
@@ -44,7 +45,7 @@ export default function Home() {
                   </p>
                   <Button
                     asChild
-                    className="bg-yellow-400 hover:bg-yellow-500 text-stone-900 mt-5"
+                    className="bg-gradient-to-r from-fuchsia-500 to-indigo-700 mt-5"
                   >
                     <a href="/booking-ride">Explore More</a>
                   </Button>
@@ -59,7 +60,7 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                 <div>
                   <div className="flex items-center mb-5">
-                    <span className="w-2 h-8 bg-yellow-400 mr-3"></span>
+                    <span className="w-2 h-8 bg-indigo-500 mr-3"></span>
                     <p className="text-xs uppercase tracking-widest">Why Us</p>
                   </div>
                   <h2 className="text-3xl font-medium mb-5">
@@ -71,7 +72,7 @@ export default function Home() {
                     different travel needs and preferences.
                   </p>
                   <Button asChild>
-                    <a href="/booking-ride">Booking Now</a>
+                    <Link href="/booking-ride" className="bg-gradient-to-r from-fuchsia-500 to-indigo-700">Booking Now</Link>
                   </Button>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -81,7 +82,7 @@ export default function Home() {
                       width={400}
                       height={250}
                       className="rounded-lg object-cover"
-                      alt="Bus"
+                      alt="taxi"
                     />
                   </div>
                   <div>
@@ -90,7 +91,7 @@ export default function Home() {
                       width={200}
                       height={150}
                       className="rounded-lg object-cover border-4 border-white -mt-16"
-                      alt="Bus Interior"
+                      alt="Taxi Interior"
                     />
                   </div>
                 </div>
@@ -99,68 +100,73 @@ export default function Home() {
           </div>
 
           {/* Transporting Across The City Section */}
-          <div className="bg-yellow-400/70 py-16">
+          <div className="bg-indigo-700/60 py-16">
             <div className="container mx-auto px-4">
-              <h2 className="text-center text-3xl font-medium mb-10">
+              <h2 className="text-center text-white text-3xl font-medium mb-10">
                 Transporting Across The City
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-               {[
-  {
-    name: "Chennai",
-    image: "https://upload.wikimedia.org/wikipedia/commons/4/41/Chennai_Marina_Beach_03-2016_img3.jpg",
-  },
-  {
-    name: "Coimbatore",
-    image: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Coimbatore_collage.jpg",
-  },
-  {
-    name: "Madurai",
-    image: "https://upload.wikimedia.org/wikipedia/commons/c/cf/Meenakshi_Temple_Madurai_South_India_03-2016_img3.jpg",
-  },
-  {
-    name: "Tiruchirappalli",
-    image: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Trichy_srirangam_temple_01-2017_img3.jpg",
-  },
-  {
-    name: "Erode",
-    image: "https://upload.wikimedia.org/wikipedia/commons/5/50/Erode_City_Skyline.png",
-  },
-  {
-    name: "Salem",
-    image: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Salem_Tamil_Nadu.jpg",
-  },
-  {
-    name: "Thanjavur",
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/38/Brihadeeswara_temple_in_Thanjavur.jpg",
-  },
-].map((city) => (
-  <div key={city.name} className="relative flex-shrink-0">
-    <Image
-      src={city.image}
-      width={192}
-      height={240}
-      className="object-cover rounded-lg"
-      alt={city.name}
-    />
-    <div className="absolute bottom-0 h-24 w-full bg-gradient-to-t from-slate-950 to-transparent p-3 flex flex-col justify-end rounded-b-lg">
-      <p className="font-medium text-white">{city.name}</p>
-      <p className="text-xs text-yellow-300">
-        popular and fantasy
-      </p>
-    </div>
-  </div>
-))}
-
+                {[
+                  {
+                    name: "Chennai",
+                    image:
+                      "https://upload.wikimedia.org/wikipedia/commons/4/41/Chennai_Marina_Beach_03-2016_img3.jpg",
+                  },
+                  {
+                    name: "Coimbatore",
+                    image:
+                      "https://upload.wikimedia.org/wikipedia/commons/e/ec/Coimbatore_collage.jpg",
+                  },
+                  {
+                    name: "Madurai",
+                    image:
+                      "https://upload.wikimedia.org/wikipedia/commons/c/cf/Meenakshi_Temple_Madurai_South_India_03-2016_img3.jpg",
+                  },
+                  {
+                    name: "Tiruchirappalli",
+                    image:
+                      "https://upload.wikimedia.org/wikipedia/commons/7/7d/Trichy_srirangam_temple_01-2017_img3.jpg",
+                  },
+                  {
+                    name: "Erode",
+                    image:
+                      "https://upload.wikimedia.org/wikipedia/commons/5/50/Erode_City_Skyline.png",
+                  },
+                  {
+                    name: "Salem",
+                    image:
+                      "https://upload.wikimedia.org/wikipedia/commons/8/8e/Salem_Tamil_Nadu.jpg",
+                  },
+                  {
+                    name: "Thanjavur",
+                    image:
+                      "https://upload.wikimedia.org/wikipedia/commons/3/38/Brihadeeswara_temple_in_Thanjavur.jpg",
+                  },
+                ].map((city) => (
+                  <div key={city.name} className="relative flex-shrink-0">
+                    <Image
+                      src={city.image}
+                      width={192}
+                      height={240}
+                      className="object-cover rounded-lg"
+                      alt={city.name}
+                    />
+                    <div className="absolute bottom-0 h-24 w-full bg-gradient-to-t from-slate-950 to-transparent p-3 flex flex-col justify-end rounded-b-lg">
+                      <p className="font-medium text-white">{city.name}</p>
+                      <p className="text-xs bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+                        popular and fantasy
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
 
-
           {/* What We Do Section */}
-          <div className="bg-yellow-400/10 mx-auto w-full px-4 lg:px-18 py-16">
+          <div className="mx-auto w-full px-4 lg:px-18 py-16">
             <div className="flex items-center  mb-5">
-              <span className="w-2 h-8 bg-yellow-400 mr-3"></span>
+              <span className="w-2 h-8 bg-indigo-500 mr-3"></span>
               <p className="text-xs uppercase tracking-widest">What we do</p>
             </div>
             <h2 className="text-3xl font-medium">Transportation and Service</h2>
@@ -177,12 +183,12 @@ export default function Home() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
                 <div className="flex items-center justify-center">
                   <p className="text-4xl font-medium mr-5">1294</p>
-                  <span className="h-5 w-5 bg-yellow-400"></span>
+                  <span className="h-5 w-5 bg-indigo-500"></span>
                   <p className="w-fit px-5 text-sm font-medium">Taxi Drivers</p>
                 </div>
                 <div className="flex items-center justify-center">
                   <p className="text-4xl font-medium mr-5">3594</p>
-                  <span className="h-5 w-5 bg-yellow-400"></span>
+                  <span className="h-5 w-5 bg-indigo-500"></span>
                   <p className="w-fit px-5 text-sm font-medium">Customers</p>
                 </div>
               </div>
@@ -193,7 +199,7 @@ export default function Home() {
           <div className="container mx-auto px-4 py-16">
             <div className="text-center mb-10">
               <div className="flex justify-center items-center mb-2">
-                <span className="w-2 h-8 bg-yellow-400 mr-3"></span>
+                <span className="w-2 h-8 bg-indigo-500 mr-3"></span>
                 <p className="text-sm uppercase tracking-widest">
                   The Transporters
                 </p>

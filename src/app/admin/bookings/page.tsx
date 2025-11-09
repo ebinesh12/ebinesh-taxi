@@ -70,7 +70,10 @@ export default async function ManageBookingsPage() {
   // Helper to determine badge color based on status
   const getStatusVariant = (
     status: string,
-  ): "bg-green-200 text-green-800" | "bg-yellow-200 text-yellow-800" | "bg-red-200 text-red-800" => {
+  ):
+    | "bg-green-200 text-green-800"
+    | "bg-yellow-200 text-yellow-800"
+    | "bg-red-200 text-red-800" => {
     switch (status) {
       case "confirmed":
         return "bg-green-200 text-green-800";

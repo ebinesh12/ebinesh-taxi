@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
-import { notFound } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -12,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BookingUpdateForm } from "./booking-update-form"; // Client component for the form
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 
 // Define a detailed type for a single booking
 export type BookingDetail = {
@@ -79,7 +78,7 @@ export default function BookingDetailPage() {
 
   // Render loading state
   if (loading) {
-    return <div className="p-8 text-center">Loading vehicle details...</div>;
+    return <div className="p-8 text-center">Loading Booking details...</div>;
   }
 
   // Render error state
@@ -131,7 +130,7 @@ export default function BookingDetailPage() {
           <DetailItem label="Trip Time" value={booking.trip_time} />
           <DetailItem
             label="Estimated Fare"
-            value={`$${booking.estimated_fare.toFixed(2)}`}
+            value={`₹${booking.estimated_fare.toFixed(2)}`}
           />
           <DetailItem
             label="Submitted On"

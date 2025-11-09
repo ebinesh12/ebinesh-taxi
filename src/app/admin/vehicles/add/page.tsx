@@ -1,13 +1,24 @@
-"use client"; // Required for using hooks like useState and useRouter
+"use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import type { Resolver } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { addVehicle } from "../actions"; // Your server action
+import { addVehicleSchema } from "@/services/schema";
 
-// Import Shadcn UI Components
+// Import Shadcn UI and Lucide Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -23,44 +34,48 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { toast } from "sonner"; // For showing success/error messages
+import { toast } from "sonner";
 import { ArrowRight, Repeat, CheckCircle, XCircle } from "lucide-react";
+
 
 export default function AddVehiclePage() {
   const router = useRouter();
 
-  // State to control the Select components
-  const [serviceType, setServiceType] = useState("One-Way");
-  const [status, setStatus] = useState("ACTIVE");
+  const form = useForm<z.infer<typeof addVehicleSchema>>({
+    resolver: zodResolver(addVehicleSchema) as Resolver<z.infer<typeof addVehicleSchema>>,
+    defaultValues: {
+      name: "",
+      service_type: "One-Way",
+      rate_per_km: undefined,
+      base_fare: undefined,
+      status: "ACTIVE",
+      vehicle_image: undefined,
+    },
+  });
 
-  // Client-side action to handle form submission and provide user feedback
-  const handleAddVehicle = async (formData: FormData) => {
-    // Check if a file is selected for better UX, though the server handles the logic
-    const imageFile = formData.get("vehicle_image") as File;
-    if (imageFile && imageFile.size === 0) {
-      toast.info("No image selected", {
-        description: "Please select an image file to upload.",
-      });
-      return; // Stop if the file input is there but no file is chosen
-    }
+  // --- 3. Create the onSubmit handler ---
+  const onSubmit = async (values: z.infer<typeof addVehicleSchema>) => {
+    const formData = new FormData();
+    // Append all values to FormData
+    Object.entries(values).forEach(([key, value]) => {
+      if (key === "vehicle_image" && value?.[0]) {
+        formData.append(key, value[0]);
+      } else {
+        formData.append(key, String(value));
+      }
+    });
 
     interface AddVehicleResult {
-      error?: string; // or Error if you use Error object
-      // include other properties if your function returns more info
-    }
+        error?: string; // or Error if you use Error object
+        // include other properties if your function returns more info
+      }
 
     const result = (await addVehicle(formData)) as unknown as AddVehicleResult;
 
-    // Check the result from the server action
     if (result?.error) {
-      // Show an error toast if something went wrong
-      toast.error("Failed to add vehicle", {
-        description: result.error,
-      });
+      toast.error("Failed to add vehicle", { description: result.error });
     } else {
-      // Show a success toast
       toast.success("Vehicle added successfully!");
-      // Redirect to the vehicles list page
       router.push("/admin/vehicles");
     }
   };
@@ -69,123 +84,156 @@ export default function AddVehiclePage() {
     <div className="mt-12 p-4 sm:p-8 max-w-3xl mx-auto">
       <Card className="p-6">
         <CardHeader className="py-4">
-          <CardTitle className="text-3xl font-bold w-1/2 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+          <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
             Add New Vehicle
           </CardTitle>
           <CardDescription>
             Fill out the form below to add a new vehicle to the system.
           </CardDescription>
         </CardHeader>
-        {/* The form calls the client-side handler for better UX */}
-        <form action={handleAddVehicle}>
-          <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="name">Vehicle Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  required
-                  placeholder="e.g., Toyota Camry, Volvo Bus"
-                />
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="service_type">Service Type</Label>
-                <Select
+        {/* --- 4. Use the Form component and connect the onSubmit handler --- */}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Vehicle Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="e.g., Toyota Camry" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="service_type"
-                  required
-                  value={serviceType}
-                  onValueChange={setServiceType}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a service type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="One-Way">
-                      <ArrowRight size={16} className="mr-2 text-violet-400" />
-                      One-Way
-                    </SelectItem>
-                    <SelectItem value="Round-Trip">
-                      <Repeat size={16} className="mr-2 text-violet-400" />
-                      Round-Trip
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="rate_per_km">Rate/KM ($)</Label>
-                <Input
-                  id="rate_per_km"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Service Type</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a service type" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="One-Way">
+                            <ArrowRight size={16} className="mr-2 text-violet-400" />
+                            One-Way
+                          </SelectItem>
+                          <SelectItem value="Round-Trip">
+                            <Repeat size={16} className="mr-2 text-violet-400" />
+                            Round-Trip
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="rate_per_km"
-                  type="number"
-                  step="0.01"
-                  required
-                  placeholder="e.g., 0.50"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Rate/KM (₹)</FormLabel>
+                      <FormControl>
+                        <Input type="number" step="0.01" placeholder="e.g., 12.50" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="base_fare">Base Fare ($)</Label>
-                <Input
-                  id="base_fare"
+                <FormField
+                  control={form.control}
                   name="base_fare"
-                  type="number"
-                  step="0.01"
-                  required
-                  placeholder="e.g., 5.00"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Base Fare (₹)</FormLabel>
+                      <FormControl>
+                        <Input type="number" step="0.01" placeholder="e.g., 50.00" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
-                <Select
+                <FormField
+                  control={form.control}
                   name="status"
-                  required
-                  value={status}
-                  onValueChange={setStatus}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select initial status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="ACTIVE">
-                      <CheckCircle size={16} className="text-green-500 mr-2" />
-                      Active
-                    </SelectItem>
-                    <SelectItem value="INACTIVE">
-                      <XCircle size={16} className="text-red-500 mr-2" />
-                      Inactive
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="vehicle_image">Vehicle Image</Label>
-                <Input
-                  id="vehicle_image"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select initial status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="ACTIVE">
+                            <CheckCircle size={16} className="text-green-500 mr-2" />
+                            Active
+                          </SelectItem>
+                          <SelectItem value="INACTIVE">
+                            <XCircle size={16} className="text-red-500 mr-2" />
+                            Inactive
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="vehicle_image"
-                  type="file"
-                  accept="image/png, image/jpeg, image/webp"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Vehicle Image</FormLabel>
+                      <FormControl>
+                        {/* Use form.register for file inputs */}
+                        <Input
+                          type="file"
+                          accept="image/png, image/jpeg, image/webp"
+                          {...form.register("vehicle_image")}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
-            </div>
-          </CardContent>
-          <CardFooter className="my-4 flex justify-end space-x-6">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.back()}
-              className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700"
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              className="bg-gradient-to-r from-fuchsia-500 to-indigo-700"
-            >
-              Add Vehicle
-            </Button>
-          </CardFooter>
-        </form>
+            </CardContent>
+            <CardFooter className="flex justify-end space-x-6">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => router.back()}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={form.formState.isSubmitting} // Disable on submit
+                className="bg-gradient-to-r from-fuchsia-500 to-indigo-700"
+              >
+                {form.formState.isSubmitting ? "Adding..." : "Add Vehicle"}
+              </Button>
+            </CardFooter>
+          </form>
+        </Form>
       </Card>
     </div>
   );
