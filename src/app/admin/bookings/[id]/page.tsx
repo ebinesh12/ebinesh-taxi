@@ -108,9 +108,11 @@ export default function BookingDetailPage() {
 
   return (
     <div className="p-4 sm:p-8 max-w-4xl mx-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-3xl">Booking Details</CardTitle>
+      <Card className="p-6">
+        <CardHeader className="py-4">
+          <CardTitle className="w-1/2 text-3xl bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+            Booking Details
+          </CardTitle>
           <CardDescription className="font-mono">
             Ref: {booking.booking_ref}
           </CardDescription>

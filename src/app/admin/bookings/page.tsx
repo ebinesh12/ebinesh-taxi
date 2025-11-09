@@ -70,81 +70,97 @@ export default async function ManageBookingsPage() {
   // Helper to determine badge color based on status
   const getStatusVariant = (
     status: string,
-  ): "bg-green-500" | "bg-yellow-400" | "bg-red-400" => {
+  ): "bg-green-200 text-green-800" | "bg-yellow-200 text-yellow-800" | "bg-red-200 text-red-800" => {
     switch (status) {
       case "confirmed":
-        return "bg-green-500";
+        return "bg-green-200 text-green-800";
       case "cancelled":
-        return "bg-red-400";
+        return "bg-red-200 text-red-800";
       case "pending":
       default:
-        return "bg-yellow-400";
+        return "bg-yellow-200 text-yellow-800";
     }
   };
 
   return (
-    <div className="p-4 sm:p-8">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold">Manage Bookings</CardTitle>
-          <CardDescription>
-            A list of all customer enquiries and their statuses.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Booking Ref</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Vehicle</TableHead>
-                  <TableHead>Trip Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {bookings.length > 0 ? (
-                  bookings.map((booking) => (
-                    <TableRow key={booking.booking_id}>
-                      <TableCell className="font-mono">
-                        {booking.booking_ref}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {booking.customer_name}
-                      </TableCell>
-                      <TableCell>{booking.vehicles?.name ?? "N/A"}</TableCell>
-                      <TableCell>
-                        {new Date(booking.trip_date).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          className={getStatusVariant(booking.booking_status)}
-                        >
-                          {booking.booking_status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <BookingActions bookingId={booking.booking_id} />
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={6}
-                      className="h-24 text-center text-muted-foreground"
-                    >
-                      No bookings found.
+    <div className="w-full p-4 sm:p-8">
+      {/* <Card > */}
+      <CardHeader className="pb-8">
+        <CardTitle className="text-3xl font-bold w-1/2 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+          Manage Bookings
+        </CardTitle>
+        <CardDescription>
+          A list of all customer enquiries and their statuses.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="overflow-x-auto rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="px-6 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+                  Booking Ref
+                </TableHead>
+                <TableHead className="px-6 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+                  Customer
+                </TableHead>
+                <TableHead className="px-6 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+                  Vehicle
+                </TableHead>
+                <TableHead className="px-6 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+                  Trip Date
+                </TableHead>
+                <TableHead className="px-6 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+                  Status
+                </TableHead>
+                <TableHead className="px-6 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700 text-right">
+                  Actions
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {bookings.length > 0 ? (
+                bookings.map((booking) => (
+                  <TableRow key={booking.booking_id}>
+                    <TableCell className="px-6 font-mono">
+                      {booking.booking_ref}
+                    </TableCell>
+                    <TableCell className="px-6 font-medium">
+                      {booking.customer_name}
+                    </TableCell>
+                    <TableCell className="px-6">
+                      {booking.vehicles?.name ?? "N/A"}
+                    </TableCell>
+                    <TableCell className="px-6">
+                      {new Date(booking.trip_date).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="px-6">
+                      <Badge
+                        className={getStatusVariant(booking.booking_status)}
+                      >
+                        {booking.booking_status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="px-6 text-right">
+                      <BookingActions bookingId={booking.booking_id} />
                     </TableCell>
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
+                    className="px-6 h-24 text-center text-muted-foreground"
+                  >
+                    No bookings found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+      {/* </Card> */}
     </div>
   );
 }

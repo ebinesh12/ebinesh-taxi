@@ -14,7 +14,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { type BookingDetail } from "./page"; // Import the type from the page
-
+import { Clock, CheckCircle, XCircle } from "lucide-react";
 interface BookingUpdateFormProps {
   booking: BookingDetail;
 }
@@ -35,7 +35,7 @@ export function BookingUpdateForm({ booking }: BookingUpdateFormProps) {
   };
 
   return (
-    <form action={handleUpdate} className="flex items-end gap-4 w-full">
+    <form action={handleUpdate} className="py-4 flex items-end gap-6 w-full">
       <input type="hidden" name="booking_id" value={booking.booking_id} />
       <div className="flex-grow">
         <Label htmlFor="status" className="mb-2 block">
@@ -53,14 +53,30 @@ export function BookingUpdateForm({ booking }: BookingUpdateFormProps) {
             <SelectValue placeholder="Select new status" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="pending">Pending</SelectItem>
-            <SelectItem value="confirmed">Confirmed</SelectItem>
-            <SelectItem value="cancelled">Cancelled</SelectItem>
+            <SelectItem value="pending">
+              <Clock className="text-yellow-400 mr-1" /> Pending
+            </SelectItem>
+            <SelectItem value="confirmed">
+              <CheckCircle className="text-green-400 mr-1" /> Confirmed
+            </SelectItem>
+            <SelectItem value="cancelled">
+              <XCircle className="text-red-400 mr-1" /> Cancelled
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
-      <Button type="submit">Save Changes</Button>
-      <Button type="button" variant="outline" onClick={() => router.back()}>
+      <Button
+        className="bg-gradient-to-r from-fuchsia-500 to-indigo-700 hover:from-fuchsia-500/75 hover:to-indigo-700/75 text-white"
+        type="submit"
+      >
+        Save Changes
+      </Button>
+      <Button
+        type="button"
+        variant="outline"
+        onClick={() => router.back()}
+        className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700"
+      >
         Go Back
       </Button>
     </form>

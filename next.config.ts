@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "ak-d.tripcdn.com",
+        hostname: "upload.wikimedia.org",
         port: "",
         pathname: "**",
       },

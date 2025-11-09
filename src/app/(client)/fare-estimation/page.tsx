@@ -118,7 +118,7 @@ function FareEstimationContent() {
     return (
       <div className="text-center mt-8 text-red-600">
         <p>{error}</p>
-        <Button onClick={() => router.back()} className="mt-4">
+        <Button onClick={() => router.back()} className="bg-yellow-400 mt-4">
           Go Back
         </Button>
       </div>
@@ -127,7 +127,7 @@ function FareEstimationContent() {
 
   return (
     <div className="container mx-auto p-4 md:p-8">
-      <h2 className="text-3xl font-bold mb-6 text-center md:text-left">
+      <h2 className="text-3xl font-bold mb-6 text-center md:text-left text-yellow-400">
         Available Rides
       </h2>
       <div className="space-y-4">
@@ -159,7 +159,7 @@ function FareEstimationContent() {
                   <p className="text-2xl font-bold mb-2">
                     ₹{vehicle.estimatedFare?.toFixed(2)}
                   </p>
-                  <Button onClick={() => handleBooking(vehicle)}>
+                  <Button onClick={() => handleBooking(vehicle)} className="bg-yellow-400 hover:bg-yellow-500">
                     Book Now
                   </Button>
                 </div>

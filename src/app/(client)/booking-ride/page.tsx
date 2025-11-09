@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,19 +15,103 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { Clock } from "lucide-react";
 
-const formSchema = z.object({
-  pickup: z.string().min(1, { message: "Pickup location is required." }),
-  drop: z.string().min(1, { message: "Drop location is required." }),
-  date: z.string().min(1, { message: "Date is required." }),
-  time: z.string().min(1, { message: "Time is required." }),
-});
+// Zod schema for form validation
+const formSchema = z
+  .object({
+    pickup: z.string().min(1, { message: "Pickup location is required." }),
+    drop: z.string().min(1, { message: "Drop location is required." }),
+    date: z.string().min(1, { message: "Date is required." }),
+    time: z.string().min(1, { message: "Time is required." }),
+  })
+  .refine(
+    (data) => {
+      const selectedDate = new Date(`${data.date}T${data.time}`);
+      const now = new Date();
+      // Allow a few minutes of grace period for the time selection
+      now.setMinutes(now.getMinutes() - 5);
+      return selectedDate >= now;
+    },
+    {
+      message: "Cannot select a past date or time.",
+      path: ["time"],
+    },
+  );
+
+// --- Custom Time Picker Component ---
+interface TimePickerProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const TimePicker = forwardRef<HTMLInputElement, TimePickerProps>(
+  ({ value, onChange, ...props }, ref) => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn(
+              "w-full justify-start text-left font-normal",
+              !value && "text-muted-foreground",
+            )}
+          >
+            <Clock className="mr-2 h-4 w-4" />
+            {value ? <span>{value}</span> : <span>Pick a time</span>}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <Input
+            ref={ref}
+            type="time"
+            value={value}
+            onChange={(e) => {
+              onChange(e.target.value);
+              setOpen(false); // Close the popover after selection
+            }}
+            className="border-none" // Remove border to blend with popover
+            {...props}
+          />
+        </PopoverContent>
+      </Popover>
+    );
+  },
+);
+TimePicker.displayName = "TimePicker";
 
 export default function RideFinderForm() {
   const [serviceType, setServiceType] = useState("One-Way");
+  const [minDate, setMinDate] = useState("");
+  const [maxDate, setMaxDate] = useState("");
   const router = useRouter();
+
+  useEffect(() => {
+    const today = new Date();
+    const oneMonthFromNow = new Date();
+    oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
+
+    const formatDate = (date: Date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    setMinDate(formatDate(today));
+    setMaxDate(formatDate(oneMonthFromNow));
+  }, []);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -113,7 +197,12 @@ export default function RideFinderForm() {
                     <FormItem>
                       <FormLabel>Date</FormLabel>
                       <FormControl>
-                        <Input type="date" {...field} />
+                        <Input
+                          type="date"
+                          {...field}
+                          min={minDate}
+                          max={maxDate}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -126,7 +215,10 @@ export default function RideFinderForm() {
                     <FormItem>
                       <FormLabel>Time</FormLabel>
                       <FormControl>
-                        <Input type="time" {...field} />
+                        <TimePicker
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

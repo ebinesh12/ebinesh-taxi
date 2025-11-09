@@ -63,7 +63,7 @@ function BookingSuccessContent() {
           )}
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Button asChild size="lg">
+          <Button asChild size="lg" className="bg-amber-300 hover:bg-amber-400">
             <Link href="/">Go to Home</Link>
           </Button>
         </CardFooter>

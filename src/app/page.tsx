@@ -4,13 +4,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 
 export default function Home() {
   return (
@@ -60,20 +53,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* What We Do Section */}
-          <div className="bg-yellow-400/10 mx-auto w-full px-4 lg:px-18 py-16">
-            <div className="flex items-center  mb-5">
-              <span className="w-2 h-8 bg-yellow-400 mr-3"></span>
-              <p className="text-xs uppercase tracking-widest">What we do</p>
-            </div>
-            <h2 className="text-3xl font-medium">Transportation and Service</h2>
-            <p className="text-sm my-8">
-              Taxis provide a more personalized and on-demand service, while
-              buses offer a systematic and mass transit solution for larger
-              groups of people.
-            </p>
-          </div>
-
           {/* Why Us Section */}
           <div className="bg-white">
             <div className="container mx-auto px-4 py-16">
@@ -107,7 +86,7 @@ export default function Home() {
                   </div>
                   <div>
                     <Image
-                      src="https://ak-d.tripcdn.com/images/0351q1200094d3lyp39C4_C_568_320_Q50.jpg_.webp"
+                      src="https://picsum.photos/id/376/1000/600"
                       width={200}
                       height={150}
                       className="rounded-lg object-cover border-4 border-white -mt-16"
@@ -126,77 +105,70 @@ export default function Home() {
                 Transporting Across The City
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-                {[
-                  {
-                    name: "Phnom Penh",
-                    image:
-                      "https://ak-d.tripcdn.com/images/0351q1200094d3lyp39C4_C_568_320_Q50.jpg_.webp",
-                  },
-                  {
-                    name: "Kampong Chhnang",
-                    image:
-                      "https://ak-d.tripcdn.com/images/0351q1200094d3lyp39C4_C_568_320_Q50.jpg_.webp",
-                  },
-                  // { name: "Pursat", image: "https://live.staticflickr.com/8691/16995702166_ab7e89c9d0_z.jpg" },
-                  // { name: "Battambong", image: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/a9/33/0d/the-namesake-of-the-city.jpg?w=1200&h=-1&s=1" },
-                  // { name: "Pailin", image: "https://memoriapalace.com/wp-content/uploads/2016/08/Phnom-Yat.jpg" },
-                  // { name: "Banteay Meanchey", image: "https://www.dinewiththelocals.com/wp-content/uploads/2019/10/IMG_20191020_085059.jpg" },
-                  // { name: "Oddar Meanchey", image: "https://tourismcambodia.org/storage/uploads/category_banner/ministry-of-tourism-cambodia-2019-02-18-07-39-42am-Oddar-Meanchey-01.jpg" },
-                  // { name: "Siem Reap", image: "https://upload.wikimedia.org/wikipedia/commons/1/14/D%27Angkor.jpg" },
-                  // ... Add other cities here
-                ].map((city) => (
-                  <div key={city.name} className="relative flex-shrink-0">
-                    <Image
-                      src={city.image}
-                      width={192}
-                      height={240}
-                      className="object-cover rounded-lg"
-                      alt={city.name}
-                    />
-                    <div className="absolute bottom-0 h-24 w-full bg-gradient-to-t from-slate-950 to-transparent p-3 flex flex-col justify-end rounded-b-lg">
-                      <p className="font-medium text-white">{city.name}</p>
-                      <p className="text-xs text-yellow-300">
-                        popular and fantasy
-                      </p>
-                    </div>
-                  </div>
-                ))}
+               {[
+  {
+    name: "Chennai",
+    image: "https://upload.wikimedia.org/wikipedia/commons/4/41/Chennai_Marina_Beach_03-2016_img3.jpg",
+  },
+  {
+    name: "Coimbatore",
+    image: "https://upload.wikimedia.org/wikipedia/commons/e/ec/Coimbatore_collage.jpg",
+  },
+  {
+    name: "Madurai",
+    image: "https://upload.wikimedia.org/wikipedia/commons/c/cf/Meenakshi_Temple_Madurai_South_India_03-2016_img3.jpg",
+  },
+  {
+    name: "Tiruchirappalli",
+    image: "https://upload.wikimedia.org/wikipedia/commons/7/7d/Trichy_srirangam_temple_01-2017_img3.jpg",
+  },
+  {
+    name: "Erode",
+    image: "https://upload.wikimedia.org/wikipedia/commons/5/50/Erode_City_Skyline.png",
+  },
+  {
+    name: "Salem",
+    image: "https://upload.wikimedia.org/wikipedia/commons/8/8e/Salem_Tamil_Nadu.jpg",
+  },
+  {
+    name: "Thanjavur",
+    image: "https://upload.wikimedia.org/wikipedia/commons/3/38/Brihadeeswara_temple_in_Thanjavur.jpg",
+  },
+].map((city) => (
+  <div key={city.name} className="relative flex-shrink-0">
+    <Image
+      src={city.image}
+      width={192}
+      height={240}
+      className="object-cover rounded-lg"
+      alt={city.name}
+    />
+    <div className="absolute bottom-0 h-24 w-full bg-gradient-to-t from-slate-950 to-transparent p-3 flex flex-col justify-end rounded-b-lg">
+      <p className="font-medium text-white">{city.name}</p>
+      <p className="text-xs text-yellow-300">
+        popular and fantasy
+      </p>
+    </div>
+  </div>
+))}
+
               </div>
             </div>
           </div>
 
-          {/* Service Comparison Section */}
-          <div className="container mx-auto px-4 py-16">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="py-3 px-0">
-                <CardHeader className="px-3">
-                  <Image
-                    src="https://picsum.photos/id/183/1000/600"
-                    width={600}
-                    height={300}
-                    className="rounded-t-lg object-cover"
-                    alt="Taxi Service"
-                  />
-                  <CardTitle>Taxi service</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="font-medium text-gray-700">
-                    Taxi Service: A taxi service is a convenient and flexible
-                    mode of transportation where individuals can hire a private
-                    vehicle for personal travel.
-                  </p>
-                </CardContent>
-                <CardFooter>
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="hover:bg-gray-600 hover:text-white"
-                  >
-                    <a href="/booking-ride">Find Now</a>
-                  </Button>
-                </CardFooter>
-              </Card>
+
+          {/* What We Do Section */}
+          <div className="bg-yellow-400/10 mx-auto w-full px-4 lg:px-18 py-16">
+            <div className="flex items-center  mb-5">
+              <span className="w-2 h-8 bg-yellow-400 mr-3"></span>
+              <p className="text-xs uppercase tracking-widest">What we do</p>
             </div>
+            <h2 className="text-3xl font-medium">Transportation and Service</h2>
+            <p className="text-sm my-8">
+              Taxis provide a more personalized and on-demand service, while
+              buses offer a systematic and mass transit solution for larger
+              groups of people.
+            </p>
           </div>
 
           {/* Statistics Section */}

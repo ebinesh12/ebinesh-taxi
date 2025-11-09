@@ -137,8 +137,8 @@ export default function BookingVerificationPage() {
     <div className="container mx-auto p-4 md:p-8 max-w-2xl">
       <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Confirm Your Booking</CardTitle>
-          <CardDescription>Review your trip summary below.</CardDescription>
+          <CardTitle className="text-xl text-yellow-400 font-bold">Confirm Your Booking</CardTitle>
+          <CardDescription className="muted">Review your trip summary below.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           <p>
@@ -154,7 +154,7 @@ export default function BookingVerificationPage() {
           <p>
             <strong>Vehicle:</strong> {tripDetails.vehicleName}
           </p>
-          <p className="text-xl font-bold mt-2">
+          <p className="text-md font-bold mt-2">
             <strong>Estimated Fare:</strong> ₹
             {Number(tripDetails.estimatedFare).toFixed(2)}
           </p>
@@ -163,7 +163,7 @@ export default function BookingVerificationPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Your Details</CardTitle>
+          <CardTitle className="text-xl text-yellow-400">Your Details</CardTitle>
           <CardDescription>
             Please provide your contact information to finalize the booking.
           </CardDescription>
@@ -221,7 +221,7 @@ export default function BookingVerificationPage() {
               {error && (
                 <p className="text-sm font-medium text-destructive">{error}</p>
               )}
-              <Button type="submit" disabled={isSubmitting} className="w-full">
+              <Button type="submit" disabled={isSubmitting} className="bg-yellow-400 hover:bg-yellow-500 w-full">
                 {isSubmitting && (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 )}

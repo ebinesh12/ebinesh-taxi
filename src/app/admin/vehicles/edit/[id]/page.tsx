@@ -25,6 +25,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner"; // Using shadcn's default toaster for feedback
+import { ArrowRight, Repeat, CheckCircle, XCircle } from "lucide-react";
 
 // Define a type for the vehicle for better code quality
 type Vehicle = {
@@ -153,14 +154,17 @@ export default function EditVehiclePage() {
   // Render the form once data is available
   return (
     <div className="p-4 sm:p-8 max-w-3xl mx-auto">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-3xl text-center font-bold">
+      <Card className="p-6">
+        <CardHeader className="py-4">
+          <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
             Edit Vehicle
           </CardTitle>
-          <CardDescription className="text-center">
+          <CardDescription>
             Update the details for{" "}
-            <span className="font-bold">{vehicle.name}</span>.
+            <span className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+              {vehicle.name}
+            </span>
+            .
           </CardDescription>
         </CardHeader>
         {/* This form now calls the client-side handler */}
@@ -195,8 +199,14 @@ export default function EditVehiclePage() {
                     <SelectValue placeholder="Select a status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="One-Way">One-Way</SelectItem>
-                    <SelectItem value="Round-Trip">Round-Trip</SelectItem>
+                    <SelectItem value="One-Way">
+                      <ArrowRight size={16} className="mr-2 text-violet-400" />
+                      One-Way
+                    </SelectItem>
+                    <SelectItem value="Round-Trip">
+                      <Repeat size={16} className="mr-2 text-violet-400" />
+                      Round-Trip
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -241,8 +251,14 @@ export default function EditVehiclePage() {
                     <SelectValue placeholder="Select a status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="ACTIVE">Active</SelectItem>
-                    <SelectItem value="INACTIVE">Inactive</SelectItem>
+                    <SelectItem value="ACTIVE">
+                      <CheckCircle size={16} className="text-green-500 mr-2" />
+                      Active
+                    </SelectItem>
+                    <SelectItem value="INACTIVE">
+                      <XCircle size={16} className="text-red-500 mr-2" />
+                      Inactive
+                    </SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -272,15 +288,21 @@ export default function EditVehiclePage() {
               </div>
             )}
           </CardContent>
-          <CardFooter className="flex justify-end space-x-2">
+          <CardFooter className="my-4 flex justify-end space-x-4">
             <Button
               type="button"
               variant="outline"
               onClick={() => router.back()}
+              className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700"
             >
               Cancel
             </Button>
-            <Button type="submit">Update Vehicle</Button>
+            <Button
+              type="submit"
+              className="bg-gradient-to-r from-fuchsia-500 to-indigo-700"
+            >
+              Update Vehicle
+            </Button>
           </CardFooter>
         </form>
       </Card>

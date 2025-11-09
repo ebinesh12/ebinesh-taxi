@@ -46,7 +46,7 @@ export default function LogoutButton() {
       onClick={handleLogout}
       disabled={isLoggingOut}
       variant="ghost"
-      className="w-full justify-start"
+      className="w-full justify-start hover:bg-gradient-to-r from-fuchsia-500 to-indigo-700 hover:text-white"
     >
       <LogOut className="mr-2 h-4 w-4" />
       {isLoggingOut ? "Logging out..." : "Logout"}

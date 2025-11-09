@@ -56,9 +56,11 @@ export default async function AdminDashboard() {
   const { totalCount, todayCount } = await getBookingStats();
 
   return (
-    <div className="p-4 sm:p-8 space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+    <div className="w-full m-4 sm:p-8 space-y-8">
+      <div className="py-8">
+        <h1 className="w-1/2 text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+          Admin Dashboard
+        </h1>
         <p className="text-muted-foreground">
           An overview of your bookings and system management.
         </p>
@@ -74,7 +76,9 @@ export default async function AdminDashboard() {
             <Calendar className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold">{todayCount}</div>
+            <div className="text-4xl font-bold w-1/2 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+              {todayCount}
+            </div>
             <p className="text-xs text-muted-foreground">
               New enquiries received today.
             </p>
@@ -88,7 +92,9 @@ export default async function AdminDashboard() {
             <Database className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-4xl font-bold">{totalCount}</div>
+            <div className="text-4xl font-bold w-1/2 bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+              {totalCount}
+            </div>
             <p className="text-xs text-muted-foreground">
               All-time enquiry count in the system.
             </p>
@@ -105,13 +111,16 @@ export default async function AdminDashboard() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col sm:flex-row gap-4">
-          <Button asChild>
+          <Button
+            asChild
+            className="bg-gradient-to-r from-fuchsia-500 to-indigo-700"
+          >
             <Link href="/admin/bookings">
               <BookOpenCheck className="mr-2 h-4 w-4" />
               Manage Bookings
             </Link>
           </Button>
-          <Button asChild variant="secondary">
+          <Button asChild variant="outline">
             <Link href="/admin/vehicles">
               <Car className="mr-2 h-4 w-4" />
               Manage Vehicles

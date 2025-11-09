@@ -16,16 +16,16 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-64 flex-col border-r bg-background p-4 md:flex">
+    <aside className="bg-blue-50 hidden h-auto w-64 flex-col border-r p-4 md:flex">
       <nav className="flex flex-col space-y-2">
         {navItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className={`flex items-center space-x-2 rounded-md px-3 py-2 text-sm font-medium ${
+            className={`flex items-center space-x-2 rounded-md px-3 py-2 text-sm text-primary font-medium ${
               pathname === item.href
-                ? "bg-accent text-accent-foreground"
-                : "hover:bg-accent"
+                ? "bg-gradient-to-r from-fuchsia-500 to-indigo-700 text-white"
+                : "hover:bg-gradient-to-r from-fuchsia-500 to-indigo-700 hover:text-white"
             }`}
           >
             <item.icon className="h-4 w-4" />
