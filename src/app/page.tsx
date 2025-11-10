@@ -7,6 +7,50 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function Home() {
+  const cities = [
+    {
+      name: "Chennai",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/3/32/Chennai_Central.jpg",
+      description: "The Detroit of Asia",
+    },
+    {
+      name: "Coimbatore",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Town_Hall%2C_Coimbatore.jpg/1024px-Town_Hall%2C_Coimbatore.jpg",
+      description: "Manchester of South India",
+    },
+    {
+      name: "Madurai",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Meenakshi_Amman_West_Tower.jpg/1920px-Meenakshi_Amman_West_Tower.jpg",
+      description: "The Athens of the East",
+    },
+    {
+      name: "Tiruchirappalli",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Rock_Fortress_-_Tiruchirappalli_-_India.JPG/1024px-Rock_Fortress_-_Tiruchirappalli_-_India.JPG",
+      description: "The Rock Fort City",
+    },
+    {
+      name: "Erode",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Erode_District_Collector%27s_Office.jpg/1024px-Erode_District_Collector%27s_Office.jpg",
+      description: "The Turmeric City",
+    },
+    {
+      name: "Salem",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/A_photo_of_Salem_Steel_Plant_entrance.JPG/1024px-A_photo_of_Salem_Steel_Plant_entrance.JPG",
+      description: "The City of Steel",
+    },
+    {
+      name: "Thanjavur",
+      image:
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Brihadisvara_Temple%2C_Thanjavur%2C_Tamil_Nadu%2C_India.jpg/800px-Brihadisvara_Temple%2C_Thanjavur%2C_Tamil_Nadu%2C_India.jpg",
+      description: "The City of Temples",
+    },
+  ];
   return (
     <div>
       <Header />
@@ -72,7 +116,12 @@ export default function Home() {
                     different travel needs and preferences.
                   </p>
                   <Button asChild>
-                    <Link href="/booking-ride" className="bg-gradient-to-r from-fuchsia-500 to-indigo-700">Booking Now</Link>
+                    <Link
+                      href="/booking-ride"
+                      className="bg-gradient-to-r from-fuchsia-500 to-indigo-700"
+                    >
+                      Booking Now
+                    </Link>
                   </Button>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
@@ -106,55 +155,19 @@ export default function Home() {
                 Transporting Across The City
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-                {[
-                  {
-                    name: "Chennai",
-                    image:
-                      "https://upload.wikimedia.org/wikipedia/commons/4/41/Chennai_Marina_Beach_03-2016_img3.jpg",
-                  },
-                  {
-                    name: "Coimbatore",
-                    image:
-                      "https://upload.wikimedia.org/wikipedia/commons/e/ec/Coimbatore_collage.jpg",
-                  },
-                  {
-                    name: "Madurai",
-                    image:
-                      "https://upload.wikimedia.org/wikipedia/commons/c/cf/Meenakshi_Temple_Madurai_South_India_03-2016_img3.jpg",
-                  },
-                  {
-                    name: "Tiruchirappalli",
-                    image:
-                      "https://upload.wikimedia.org/wikipedia/commons/7/7d/Trichy_srirangam_temple_01-2017_img3.jpg",
-                  },
-                  {
-                    name: "Erode",
-                    image:
-                      "https://upload.wikimedia.org/wikipedia/commons/5/50/Erode_City_Skyline.png",
-                  },
-                  {
-                    name: "Salem",
-                    image:
-                      "https://upload.wikimedia.org/wikipedia/commons/8/8e/Salem_Tamil_Nadu.jpg",
-                  },
-                  {
-                    name: "Thanjavur",
-                    image:
-                      "https://upload.wikimedia.org/wikipedia/commons/3/38/Brihadeeswara_temple_in_Thanjavur.jpg",
-                  },
-                ].map((city) => (
+                {cities.map((city) => (
                   <div key={city.name} className="relative flex-shrink-0">
                     <Image
                       src={city.image}
                       width={192}
                       height={240}
-                      className="object-cover rounded-lg"
+                      className="object-cover h-full rounded-lg"
                       alt={city.name}
                     />
                     <div className="absolute bottom-0 h-24 w-full bg-gradient-to-t from-slate-950 to-transparent p-3 flex flex-col justify-end rounded-b-lg">
                       <p className="font-medium text-white">{city.name}</p>
-                      <p className="text-xs bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
-                        popular and fantasy
+                      <p className="text-xs font-semibold text-muted-foreground">
+                        {city.description}
                       </p>
                     </div>
                   </div>

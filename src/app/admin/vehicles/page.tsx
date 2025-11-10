@@ -83,7 +83,11 @@ export default function ManageVehicles() {
 
   // Render loading state
   if (loading) {
-    return <div className="p-8 text-center">Loading vehicle details...</div>;
+    return (
+      <div className="p-8 flex justify-center items-center text-center">
+        Loading vehicle details...
+      </div>
+    );
   }
 
   // Render error state

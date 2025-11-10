@@ -37,12 +37,13 @@ import {
 import { toast } from "sonner";
 import { ArrowRight, Repeat, CheckCircle, XCircle } from "lucide-react";
 
-
 export default function AddVehiclePage() {
   const router = useRouter();
 
   const form = useForm<z.infer<typeof addVehicleSchema>>({
-    resolver: zodResolver(addVehicleSchema) as Resolver<z.infer<typeof addVehicleSchema>>,
+    resolver: zodResolver(addVehicleSchema) as Resolver<
+      z.infer<typeof addVehicleSchema>
+    >,
     defaultValues: {
       name: "",
       service_type: "One-Way",
@@ -66,9 +67,9 @@ export default function AddVehiclePage() {
     });
 
     interface AddVehicleResult {
-        error?: string; // or Error if you use Error object
-        // include other properties if your function returns more info
-      }
+      error?: string; // or Error if you use Error object
+      // include other properties if your function returns more info
+    }
 
     const result = (await addVehicle(formData)) as unknown as AddVehicleResult;
 
@@ -127,11 +128,17 @@ export default function AddVehiclePage() {
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="One-Way">
-                            <ArrowRight size={16} className="mr-2 text-violet-400" />
+                            <ArrowRight
+                              size={16}
+                              className="mr-2 text-violet-400"
+                            />
                             One-Way
                           </SelectItem>
                           <SelectItem value="Round-Trip">
-                            <Repeat size={16} className="mr-2 text-violet-400" />
+                            <Repeat
+                              size={16}
+                              className="mr-2 text-violet-400"
+                            />
                             Round-Trip
                           </SelectItem>
                         </SelectContent>
@@ -147,7 +154,12 @@ export default function AddVehiclePage() {
                     <FormItem>
                       <FormLabel>Rate/KM (₹)</FormLabel>
                       <FormControl>
-                        <Input type="number" step="0.01" placeholder="e.g., 12.50" {...field} />
+                        <Input
+                          type="number"
+                          step="0.01"
+                          placeholder="e.g., 12.50"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -160,7 +172,12 @@ export default function AddVehiclePage() {
                     <FormItem>
                       <FormLabel>Base Fare (₹)</FormLabel>
                       <FormControl>
-                        <Input type="number" step="0.01" placeholder="e.g., 50.00" {...field} />
+                        <Input
+                          type="number"
+                          step="0.01"
+                          placeholder="e.g., 50.00"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -183,7 +200,10 @@ export default function AddVehiclePage() {
                         </FormControl>
                         <SelectContent>
                           <SelectItem value="ACTIVE">
-                            <CheckCircle size={16} className="text-green-500 mr-2" />
+                            <CheckCircle
+                              size={16}
+                              className="text-green-500 mr-2"
+                            />
                             Active
                           </SelectItem>
                           <SelectItem value="INACTIVE">

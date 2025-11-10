@@ -1,7 +1,7 @@
 // app/fare-estimation/page.tsx
 "use client";
 
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useMemo } from "react"; // 1. Import useMemo
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { supabase } from "@/utils/supabase/client";
@@ -14,7 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 type Vehicle = {
   id: string;
   name: string;
-  image_url: string | null;
+  vehicle_image: string | null; // Allow vehicle_image to be null
   service_type: string;
   rate_per_km: number;
   base_fare: number;
@@ -37,10 +37,27 @@ function FareEstimationContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Safely get and validate search params
-  const validationResult = searchParamsSchema.safeParse(
-    Object.fromEntries(searchParams.entries()),
-  );
+  // 2. Memoize the validation result
+  // This ensures validationResult is a stable object unless searchParams change
+  const validationResult = useMemo(() => {
+    return searchParamsSchema.safeParse(
+      Object.fromEntries(searchParams.entries()),
+    );
+  }, [searchParams]);
+
+  const imagePreview = (vehicle_image: string | null): string => {
+    // Return a placeholder if the image URL is null or undefined
+    if (!vehicle_image) {
+      return "https://picsum.photos/id/183/1000/600"; // Fallback image
+    }
+    // The bytea string from PostgREST is prefixed with "\\x"
+    const hex = vehicle_image.substring(2);
+    const uint8Array = new Uint8Array(
+      hex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
+    );
+    const blob = new Blob([uint8Array], { type: "image/jpeg" }); // Assume a default type
+    return URL.createObjectURL(blob);
+  };
 
   useEffect(() => {
     if (!validationResult.success) {
@@ -69,12 +86,15 @@ function FareEstimationContent() {
         }
 
         const distance = calculateMockDistance(pickup, drop);
-        const vehiclesWithFare = data.map((v: Vehicle) => ({
-          ...v,
-          estimatedFare: distance * v.rate_per_km + v.base_fare,
-        }));
-        console.log(distance, vehiclesWithFare);
+        const vehiclesWithFare = data.map(
+          (v: Omit<Vehicle, "image_url"> & { image_url: string | null }) => ({
+            ...v,
+            estimatedFare: distance * v.rate_per_km + v.base_fare,
+          }),
+        );
+
         setVehicles(vehiclesWithFare);
+        // console.log("Fetched vehicles:", vehiclesWithFare);
       } catch (err: any) {
         console.error("Error fetching vehicles:", err);
         setError("Failed to fetch available vehicles. Please try again later.");
@@ -84,7 +104,8 @@ function FareEstimationContent() {
     };
 
     fetchVehicles();
-  }, [searchParams, validationResult]); // Depend on searchParams
+    // 3. The dependency array now uses the stable, memoized object
+  }, [validationResult]);
 
   const handleBooking = (vehicle: Vehicle) => {
     if (!validationResult.success) return; // Guard clause
@@ -99,15 +120,18 @@ function FareEstimationContent() {
     router.push("/booking-verification");
   };
 
-  // if (loading) {
-  //   return <VehicleListSkeleton />;
-  // }
+  if (loading) {
+    return <VehicleListSkeleton />;
+  }
 
   if (error) {
     return (
       <div className="text-center mt-8 text-red-600">
         <p>{error}</p>
-        <Button onClick={() => router.back()} className="bg-gradient-to-r from-fuchsia-500 to-indigo-700 mt-4">
+        <Button
+          onClick={() => router.back()}
+          className="bg-gradient-to-r from-fuchsia-500 to-indigo-700 mt-4"
+        >
           Go Back
         </Button>
       </div>
@@ -119,84 +143,70 @@ function FareEstimationContent() {
       <h2 className="text-3xl font-bold mb-6 text-center md:text-left bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
         Available Rides
       </h2>
-      <div className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  {vehicles.length > 0 ? (
-    vehicles.map((vehicle) => (
-      <Card key={vehicle.id} className="p-0 w-full flex flex-col">
-        <CardContent className="p-4 flex flex-col items-center text-center flex-grow">
-          {/* Image is now at the top */}
-          <div className="relative w-full h-48 mb-4">
-            <Image
-              src={
-                vehicle.image_url ||
-                "https://picsum.photos/id/183/1000/600"
-              }
-              alt={vehicle.name}
-              layout="fill"
-              objectFit="cover"
-              className="rounded-md"
-            />
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {vehicles.length > 0 ? (
+          vehicles.map((vehicle) => (
+            <Card key={vehicle.id} className="p-0 w-full flex flex-col">
+              <CardContent className="p-4 flex flex-col items-center text-center flex-grow">
+                <div className="relative w-full h-48 mb-4">
+                  <Image
+                    src={imagePreview(vehicle.vehicle_image)}
+                    alt={vehicle.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                  />
+                </div>
 
-          {/* Vehicle Name and Service Type */}
-          <div className="flex flex-row items-center gap-x-8">
-            <CardTitle className="text-xl font-semibold">
-              {vehicle.name}
-            </CardTitle>
-            <p className="text-muted-foreground">
-              {vehicle.service_type}
-            </p>
-          </div>
+                <div className="flex flex-row items-center gap-x-8">
+                  <CardTitle className="text-xl font-semibold">
+                    {vehicle.name}
+                  </CardTitle>
+                  <p className="text-muted-foreground">
+                    {vehicle.service_type}
+                  </p>
+                </div>
 
-          {/* Fare and Booking Button */}
-          <div className="mt-4 w-full">
-            <p className="text-2xl font-bold mb-2">
-              ₹{vehicle.estimatedFare?.toFixed(2)}
-            </p>
-            <Button
-              onClick={() => handleBooking(vehicle)}
-              className="w-full bg-gradient-to-r from-fuchsia-500 to-indigo-700 hover:from-fuchsia-500/75 hover:to-indigo-700/75"
-            >
-              Book Now
-            </Button>
+                <div className="mt-4 w-full">
+                  <p className="text-2xl font-bold mb-2">
+                    ₹{vehicle.estimatedFare?.toFixed(2)}
+                  </p>
+                  <Button
+                    onClick={() => handleBooking(vehicle)}
+                    className="w-full bg-gradient-to-r from-fuchsia-500 to-indigo-700 hover:from-fuchsia-500/75 hover:to-indigo-700/75"
+                  >
+                    Book Now
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-full text-center text-gray-500 mt-8">
+            <p>No vehicles available for the selected criteria.</p>
           </div>
-        </CardContent>
-      </Card>
-    ))
-  ) : (
-    <div className="col-span-full text-center text-gray-500">
-      <p>
-        No vehicles available for the selected criteria.
-      </p>
-    </div>
-  )}
-</div>
+        )}
       </div>
     </div>
   );
 }
 
-// A Skeleton component to show while loading
+// A Skeleton component that matches the final card layout
 const VehicleListSkeleton = () => (
   <div className="container mx-auto p-4 md:p-8">
-    <h2 className="text-3xl font-bold mb-6 text-center md:text-left">
-      <Skeleton className="h-9 w-64" />
-    </h2>
-    <div className="space-y-4">
+    <Skeleton className="h-9 w-64 mb-6" />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {[...Array(3)].map((_, i) => (
-        <Card key={i} className="w-full">
-          <CardContent className="p-4 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <Skeleton className="h-24 w-24 rounded-md" />
-              <div className="space-y-2">
-                <Skeleton className="h-6 w-40" />
-                <Skeleton className="h-4 w-24" />
-              </div>
+        <Card key={i} className="p-0 w-full flex flex-col">
+          <CardContent className="p-4 flex flex-col items-center text-center flex-grow">
+            <Skeleton className="w-full h-48 mb-4 rounded-md" />
+            <div className="flex flex-row items-center gap-x-8">
+              <Skeleton className="h-7 w-28" />
+              <Skeleton className="h-5 w-20" />
             </div>
-            <div className="flex flex-col items-end gap-2">
-              <Skeleton className="h-8 w-32" />
-              <Skeleton className="h-10 w-28" />
+            <div className="mt-4 w-full space-y-2">
+              <Skeleton className="h-8 w-1/2 mx-auto" />
+              <Skeleton className="h-10 w-full" />
             </div>
           </CardContent>
         </Card>

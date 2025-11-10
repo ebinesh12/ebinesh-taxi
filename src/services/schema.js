@@ -42,9 +42,9 @@ export const registerSchema = z.object({
 
 export const loginSchema = z.object({
   email: z
-  .string()
-  .min(1, { message: "Email is required." })
-  .email({ message: "Please enter a valid email address." }),
+    .string()
+    .min(1, { message: "Email is required." })
+    .email({ message: "Please enter a valid email address." }),
   password: z.string().min(1, { message: "Password is required." }),
 });
 
@@ -63,25 +63,23 @@ export const addVehicleSchema = z.object({
   name: z.string().min(1, { message: "Vehicle name is required." }),
   service_type: z.enum(["One-Way", "Round-Trip"]),
   rate_per_km: z.coerce
-  .number()
-  .positive({ message: "Rate must be a positive number." }),
+    .number()
+    .positive({ message: "Rate must be a positive number." }),
   base_fare: z.coerce
-  .number()
-  .positive({ message: "Base fare must be a positive number." }),
+    .number()
+    .positive({ message: "Base fare must be a positive number." }),
   status: z.enum(["ACTIVE", "INACTIVE"]),
   vehicle_image: z
-  .any()
-  .optional()
-  .refine(
-    (files) =>
-      !files?.[0] || files?.[0].size <= MAX_FILE_SIZE,
-    `Max image size is 5MB.`
-  )
-  .refine(
-    (files) =>
-      !files?.[0] || ACCEPTED_IMAGE_TYPES.includes(files?.[0].type),
-    "Only .jpg, .jpeg, .png and .webp formats are supported."
-  ),
+    .any()
+    .optional()
+    .refine(
+      (files) => !files?.[0] || files?.[0].size <= MAX_FILE_SIZE,
+      `Max image size is 5MB.`,
+    )
+    .refine(
+      (files) => !files?.[0] || ACCEPTED_IMAGE_TYPES.includes(files?.[0].type),
+      "Only .jpg, .jpeg, .png and .webp formats are supported.",
+    ),
 });
 
 /*---------------------- Edit Vehicle Zod schemas for validation---------------------*/
@@ -89,19 +87,19 @@ export const addVehicleSchema = z.object({
 export const editVehicleSchema = z.object({
   name: z.string().min(1, { message: "Vehicle name is required." }),
   service_type: z.enum(["One-Way", "Round-Trip"]),
-  rate_per_km: z.coerce.number().positive({ message: "Rate must be a positive number." }),
-  base_fare: z.coerce.number().positive({ message: "Base fare must be a positive number." }),
+  rate_per_km: z.coerce
+    .number()
+    .positive({ message: "Rate must be a positive number." }),
+  base_fare: z.coerce
+    .number()
+    .positive({ message: "Base fare must be a positive number." }),
   status: z.enum(["ACTIVE", "INACTIVE"]),
-  vehicle_image: z.any().optional()
-    .refine(
-      (files) => !files?.[0] || files?.[0].size <= MAX_FILE_SIZE, `Max image size is 5MB.`
-    )
-    .refine(
-      (files) => !files?.[0] || ACCEPTED_IMAGE_TYPES.includes(files?.[0].type), "Only .jpg, .jpeg, .png and .webp formats are supported."
-    ),
+  vehicle_image: z
+    .any()
+    .optional()
 });
 
-/*---------------------- Register Zod schemas for validation---------------------*/
+/*---------------------- Ride Zod schemas for validation---------------------*/
 
 // Zod schema for form validation
 export const rideSchema = z
@@ -125,7 +123,7 @@ export const rideSchema = z
     },
   );
 
-/*---------------------- Register Zod schemas for validation---------------------*/
+/*---------------------- Verify Zod schemas for validation---------------------*/
 
 // Zod schema for the customer details form
 export const verifySchema = z.object({
@@ -140,7 +138,7 @@ export const verifySchema = z.object({
     .or(z.literal("")),
 });
 
-/*---------------------- Register Zod schemas for validation---------------------*/
+/*---------------------- Search Zod schemas for validation---------------------*/
 
 // Define a Zod schema for validating the search parameters
 export const searchParamsSchema = z.object({

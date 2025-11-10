@@ -63,7 +63,11 @@ function BookingSuccessContent() {
           )}
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Button asChild size="lg" className="bg-gradient-to-r from-fuchsia-500 to-indigo-700">
+          <Button
+            asChild
+            size="lg"
+            className="bg-gradient-to-r from-fuchsia-500 to-indigo-700"
+          >
             <Link href="/">Go to Home</Link>
           </Button>
         </CardFooter>
