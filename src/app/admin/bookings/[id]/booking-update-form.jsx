@@ -13,17 +13,13 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { type BookingDetail } from "./page"; // Import the type from the page
 import { Clock, CheckCircle, XCircle } from "lucide-react";
-interface BookingUpdateFormProps {
-  booking: BookingDetail;
-}
 
-export function BookingUpdateForm({ booking }: BookingUpdateFormProps) {
+export function BookingUpdateForm({ booking }) {
   const router = useRouter();
   const [currentStatus, setCurrentStatus] = useState(booking.booking_status);
 
-  const handleUpdate = async (formData: FormData) => {
+  const handleUpdate = async (formData) => {
     const result = await updateBookingStatus(formData);
     if (result?.error) {
       toast.error("Update Failed", { description: result.error });
@@ -45,9 +41,7 @@ export function BookingUpdateForm({ booking }: BookingUpdateFormProps) {
           name="status"
           required
           value={currentStatus}
-          onValueChange={(value) =>
-            setCurrentStatus(value as BookingDetail["booking_status"])
-          }
+          onValueChange={(value) => setCurrentStatus(value)}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select new status" />

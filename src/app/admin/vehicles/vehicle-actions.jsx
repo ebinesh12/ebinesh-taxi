@@ -19,12 +19,7 @@ import {
 import { Edit, Trash } from "lucide-react";
 import { toast } from "sonner";
 
-// Define the props for this component
-interface VehicleActionsProps {
-  vehicleId: string;
-}
-
-export function VehicleActions({ vehicleId }: VehicleActionsProps) {
+export function VehicleActions({ vehicleId }) {
   const handleDeleteAction = async () => {
     const result = await deleteVehicle(vehicleId);
 

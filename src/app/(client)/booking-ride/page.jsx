@@ -4,7 +4,6 @@ import { useState, useEffect, forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,47 +24,40 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { Clock } from "lucide-react";
 import { rideSchema } from "@/services/schema";
-// --- Custom Time Picker Component ---
-interface TimePickerProps {
-  value: string;
-  onChange: (value: string) => void;
-}
 
-const TimePicker = forwardRef<HTMLInputElement, TimePickerProps>(
-  ({ value, onChange, ...props }, ref) => {
-    const [open, setOpen] = useState(false);
+const TimePicker = forwardRef(({ value, onChange, ...props }, ref) => {
+  const [open, setOpen] = useState(false);
 
-    return (
-      <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className={cn(
-              "w-full justify-start text-left font-normal",
-              !value && "text-muted-foreground",
-            )}
-          >
-            <Clock className="mr-2 h-4 w-4" />
-            {value ? <span>{value}</span> : <span>Pick a time</span>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
-          <Input
-            ref={ref}
-            type="time"
-            value={value}
-            onChange={(e) => {
-              onChange(e.target.value);
-              setOpen(false); // Close the popover after selection
-            }}
-            className="border-none" // Remove border to blend with popover
-            {...props}
-          />
-        </PopoverContent>
-      </Popover>
-    );
-  },
-);
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className={cn(
+            "w-full justify-start text-left font-normal",
+            !value && "text-muted-foreground",
+          )}
+        >
+          <Clock className="mr-2 h-4 w-4" />
+          {value ? <span>{value}</span> : <span>Pick a time</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0">
+        <Input
+          ref={ref}
+          type="time"
+          value={value}
+          onChange={(e) => {
+            onChange(e.target.value);
+            setOpen(false); // Close the popover after selection
+          }}
+          className="border-none" // Remove border to blend with popover
+          {...props}
+        />
+      </PopoverContent>
+    </Popover>
+  );
+});
 TimePicker.displayName = "TimePicker";
 
 export default function RideFinderForm() {
@@ -79,18 +71,19 @@ export default function RideFinderForm() {
     const oneMonthFromNow = new Date();
     oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
 
-    const formatDate = (date: Date) => {
+    const formatDate = (date) => {
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const day = String(date.getDate()).padStart(2, "0");
       return `${year}-${month}-${day}`;
     };
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMinDate(formatDate(today));
     setMaxDate(formatDate(oneMonthFromNow));
   }, []);
 
-  const form = useForm<z.infer<typeof rideSchema>>({
+  const form = useForm({
     resolver: zodResolver(rideSchema),
     defaultValues: {
       pickup: "",
@@ -100,7 +93,7 @@ export default function RideFinderForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof rideSchema>) {
+  function onSubmit(values) {
     const queryParams = new URLSearchParams({
       ...values,
       serviceType,

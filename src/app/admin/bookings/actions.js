@@ -5,9 +5,9 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 // Action to update a booking's status
-export async function updateBookingStatus(formData: FormData) {
-  const bookingId = formData.get("booking_id") as string;
-  const newStatus = formData.get("status") as string;
+export async function updateBookingStatus(formData) {
+  const bookingId = formData.get("booking_id");
+  const newStatus = formData.get("status");
 
   if (!bookingId || !newStatus) {
     return { error: "Missing booking ID or status." };
@@ -31,7 +31,7 @@ export async function updateBookingStatus(formData: FormData) {
 }
 
 // Action to delete a booking
-export async function deleteBooking(bookingId: string) {
+export async function deleteBooking(bookingId) {
   if (!bookingId) {
     return { error: "Invalid booking ID provided." };
   }

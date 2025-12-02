@@ -2,14 +2,12 @@
 
 This project is a mini Taxi Booking web application designed for customer-facing booking flow and an admin panel to manage bookings and vehicles.
 
-
 ## Tech Stack
 
-- **Frontend:** Next.js  
-- **Backend:** Next.js API Routes  
-- **Database:** Supabase  
+- **Frontend:** Next.js
+- **Backend:** Next.js API Routes
+- **Database:** Supabase
 - **Bonus:** Usage of TypeScript
-
 
 ## Features
 
@@ -66,16 +64,16 @@ This project is a mini Taxi Booking web application designed for customer-facing
 
 ### Installation
 
-1. Clone the repository  
-2. Install dependencies  
-3. Configure environment variables for Supabase and authentication  
-4. Run the development server  
+1. Clone the repository
+2. Install dependencies
+3. Configure environment variables for Supabase and authentication
+4. Run the development server
 
 ## Usage
 
-- Access the customer booking flow via the main landing page  
-- Admin access available via specified admin route with login required  
-- Manage vehicles and bookings through the admin dashboard  
+- Access the customer booking flow via the main landing page
+- Admin access available via specified admin route with login required
+- Manage vehicles and bookings through the admin dashboard
 
 ## License
 
@@ -84,4 +82,3 @@ This project is for technical screening purposes and does not carry a license.
 ## Author
 
 Developed as a practical assessment project By <b>Ebinesh Rabin<b> .
-

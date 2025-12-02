@@ -13,7 +13,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -26,29 +25,18 @@ import { PlusCircle } from "lucide-react";
 import { VehicleActions } from "./vehicle-actions";
 import { useState, useEffect } from "react";
 
-// Define a type for our vehicle data for better TypeScript support
-export type Vehicle = {
-  id: string;
-  name: string;
-  service_type: string;
-  rate_per_km: number;
-  base_fare: number;
-  status: "ACTIVE" | "INACTIVE";
-  vehicle_image?: string; // The bytea field will be a hex string
-};
-
 export default function ManageVehicles() {
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState("");
   // const [imagePreview, setImagePreview] = useState<string>("/#");
 
-  const imagePreview = (vehicle_image: string | undefined) => {
+  const imagePreview = (vehicle_image) => {
     if (vehicle_image) {
       // The bytea string from PostgREST is prefixed with "\\x"
       const hex = vehicle_image?.substring(2);
       const uint8Array = new Uint8Array(
-        hex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
+        hex.match(/.{1,2}/g)?.map((byte) => parseInt(byte, 16)),
       );
       const blob = new Blob([uint8Array], { type: "image/jpeg" }); // Assume a default type or store it in DB
       return URL.createObjectURL(blob);
@@ -67,7 +55,7 @@ export default function ManageVehicles() {
         if (data) {
           setVehicles(data);
         }
-      } catch (err: unknown) {
+      } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
         } else {

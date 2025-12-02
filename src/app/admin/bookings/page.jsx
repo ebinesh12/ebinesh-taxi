@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -19,20 +18,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { BookingActions } from "./booking-actions"; // Client component for buttons
 
-// Define a type for our joined data
-export type BookingWithVehicle = {
-  booking_id: number;
-  booking_ref: string;
-  customer_name: string;
-  trip_date: string;
-  booking_status: "pending" | "confirmed" | "cancelled";
-  vehicles: {
-    name: string;
-  } | null;
-};
-
 // Async function to fetch bookings with vehicle names
-async function getBookings(): Promise<BookingWithVehicle[]> {
+async function getBookings() {
   const { data, error } = await supabase
     .from("bookings")
     .select(
@@ -52,7 +39,7 @@ async function getBookings(): Promise<BookingWithVehicle[]> {
   }
 
   // Supabase returns related rows as arrays; normalize to a single vehicle object or null
-  const normalized: BookingWithVehicle[] = (data || []).map((row: any) => ({
+  const normalized = (data || []).map((row) => ({
     booking_id: row.booking_id,
     booking_ref: row.booking_ref,
     customer_name: row.customer_name,
@@ -68,12 +55,7 @@ export default async function ManageBookingsPage() {
   const bookings = await getBookings();
 
   // Helper to determine badge color based on status
-  const getStatusVariant = (
-    status: string,
-  ):
-    | "bg-green-200 text-green-800"
-    | "bg-yellow-200 text-yellow-800"
-    | "bg-red-200 text-red-800" => {
+  const getStatusVariant = (status) => {
     switch (status) {
       case "confirmed":
         return "bg-green-200 text-green-800";

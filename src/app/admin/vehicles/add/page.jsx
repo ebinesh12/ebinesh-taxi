@@ -2,9 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import type { Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { addVehicle } from "../actions"; // Your server action
 import { addVehicleSchema } from "@/services/schema";
 
@@ -40,10 +38,8 @@ import { ArrowRight, Repeat, CheckCircle, XCircle } from "lucide-react";
 export default function AddVehiclePage() {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof addVehicleSchema>>({
-    resolver: zodResolver(addVehicleSchema) as Resolver<
-      z.infer<typeof addVehicleSchema>
-    >,
+  const form = useForm({
+    resolver: zodResolver(addVehicleSchema),
     defaultValues: {
       name: "",
       service_type: "One-Way",
@@ -55,7 +51,7 @@ export default function AddVehiclePage() {
   });
 
   // --- 3. Create the onSubmit handler ---
-  const onSubmit = async (values: z.infer<typeof addVehicleSchema>) => {
+  const onSubmit = async (values) => {
     const formData = new FormData();
     // Append all values to FormData
     Object.entries(values).forEach(([key, value]) => {
@@ -66,12 +62,7 @@ export default function AddVehiclePage() {
       }
     });
 
-    interface AddVehicleResult {
-      error?: string; // or Error if you use Error object
-      // include other properties if your function returns more info
-    }
-
-    const result = (await addVehicle(formData)) as unknown as AddVehicleResult;
+    const result = await addVehicle(formData);
 
     if (result?.error) {
       toast.error("Failed to add vehicle", { description: result.error });

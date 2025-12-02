@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { supabase } from "@/utils/supabase/client";
 import { updateVehicle } from "../../actions"; // Your server action
 import Image from "next/image";
-import type { Resolver } from "react-hook-form";
 import { editVehicleSchema } from "@/services/schema";
 
 // Import Shadcn UI and Lucide Components
@@ -44,18 +42,16 @@ import { Label } from "@/components/ui/label";
 export default function EditVehiclePage() {
   const params = useParams();
   const router = useRouter();
-  const id = params?.id as string;
+  const id = params?.id;
 
   // State for UI control (loading, errors, image preview)
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [error, setError] = useState();
+  const [imagePreview, setImagePreview] = useState();
 
   // --- 2. Set up the form with react-hook-form and Zod ---
-  const form = useForm<z.infer<typeof editVehicleSchema>>({
-    resolver: zodResolver(editVehicleSchema) as Resolver<
-      z.infer<typeof editVehicleSchema>
-    >,
+  const form = useForm({
+    resolver: zodResolver(editVehicleSchema),
     defaultValues: {
       name: "",
       service_type: "One-Way",
@@ -88,13 +84,13 @@ export default function EditVehiclePage() {
           if (data.vehicle_image) {
             const hex = data.vehicle_image.substring(2);
             const uint8Array = new Uint8Array(
-              hex.match(/.{1,2}/g)!.map((byte: string) => parseInt(byte, 16)),
+              hex.match(/.{1,2}/g)?.map((byte) => parseInt(byte, 16)),
             );
             const blob = new Blob([uint8Array]);
             setImagePreview(URL.createObjectURL(blob));
           }
         }
-      } catch (err: any) {
+      } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
@@ -121,7 +117,7 @@ export default function EditVehiclePage() {
   }, [imageFile]);
 
   // --- 5. Create the onSubmit handler ---
-  const onSubmit = async (values: z.infer<typeof editVehicleSchema>) => {
+  const onSubmit = async (values) => {
     const formData = new FormData();
     formData.append("id", id); // Add the ID for the update action
 
@@ -134,14 +130,7 @@ export default function EditVehiclePage() {
       }
     });
 
-    interface EditVehicleResult {
-      error?: string; // or Error if you use Error object
-      // include other properties if your function returns more info
-    }
-
-    const result = (await updateVehicle(
-      formData,
-    )) as unknown as EditVehicleResult;
+    const result = await updateVehicle(formData);
 
     if (result?.error) {
       toast.error("Failed to update vehicle.", { description: result.error });

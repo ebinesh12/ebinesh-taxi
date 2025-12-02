@@ -4,11 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
 
-interface BookingActionsProps {
-  bookingId: number;
-}
-
-export function BookingActions({ bookingId }: BookingActionsProps) {
+export function BookingActions({ bookingId }) {
   return (
     <Button variant="ghost" size="icon" asChild>
       <Link href={`/admin/bookings/${bookingId}`}>

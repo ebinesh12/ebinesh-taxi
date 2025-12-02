@@ -2,11 +2,7 @@ import { Sidebar } from "@/components/Sidebar";
 // import { ModeToggle } from "@/components/mode-toggle"
 import { cn } from "@/lib/utils";
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function AdminLayout({ children }) {
   return (
     <div className="flex flex-col h-screen bg-background">
       <div className=" min-h-screen">

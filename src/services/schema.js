@@ -94,9 +94,7 @@ export const editVehicleSchema = z.object({
     .number()
     .positive({ message: "Base fare must be a positive number." }),
   status: z.enum(["ACTIVE", "INACTIVE"]),
-  vehicle_image: z
-    .any()
-    .optional()
+  vehicle_image: z.any().optional(),
 });
 
 /*---------------------- Ride Zod schemas for validation---------------------*/

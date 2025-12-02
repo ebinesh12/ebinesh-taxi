@@ -13,14 +13,8 @@ import {
 } from "@/components/ui/card";
 import { BookOpenCheck, Calendar, Car, Database } from "lucide-react";
 
-// Add a type for our stats for better code quality
-type BookingStats = {
-  totalCount: number;
-  todayCount: number;
-};
-
 // This function fetches data on the server
-async function getBookingStats(): Promise<BookingStats> {
+async function getBookingStats() {
   const today = new Date().toISOString().split("T")[0];
 
   // Using Promise.all to fetch data in parallel for better performance

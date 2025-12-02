@@ -10,19 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Define a type for our vehicle data for better type safety
-type Vehicle = {
-  id: string;
-  name: string;
-  vehicle_image: string | null; // Allow vehicle_image to be null
-  service_type: string;
-  rate_per_km: number;
-  base_fare: number;
-  estimatedFare?: number;
-};
-
 // Mock function to simulate distance calculation
-const calculateMockDistance = (pickup: string, drop: string): number => {
+const calculateMockDistance = (pickup, drop) => {
   // In a real app, use an API like Google Maps Distance Matrix API
   // Using pickup/drop lengths to make the random number consistent for the same inputs
   const combinedLength = pickup.length + drop.length;
@@ -33,9 +22,9 @@ function FareEstimationContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
   // 2. Memoize the validation result
   // This ensures validationResult is a stable object unless searchParams change
@@ -45,7 +34,7 @@ function FareEstimationContent() {
     );
   }, [searchParams]);
 
-  const imagePreview = (vehicle_image: string | null): string => {
+  const imagePreview = (vehicle_image) => {
     // Return a placeholder if the image URL is null or undefined
     if (!vehicle_image) {
       return "https://picsum.photos/id/183/1000/600"; // Fallback image
@@ -53,7 +42,7 @@ function FareEstimationContent() {
     // The bytea string from PostgREST is prefixed with "\\x"
     const hex = vehicle_image.substring(2);
     const uint8Array = new Uint8Array(
-      hex.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)),
+      hex.match(/.{1,2}/g)?.map((byte) => parseInt(byte, 16)),
     );
     const blob = new Blob([uint8Array], { type: "image/jpeg" }); // Assume a default type
     return URL.createObjectURL(blob);
@@ -86,16 +75,14 @@ function FareEstimationContent() {
         }
 
         const distance = calculateMockDistance(pickup, drop);
-        const vehiclesWithFare = data.map(
-          (v: Omit<Vehicle, "image_url"> & { image_url: string | null }) => ({
-            ...v,
-            estimatedFare: distance * v.rate_per_km + v.base_fare,
-          }),
-        );
+        const vehiclesWithFare = data.map((v) => ({
+          ...v,
+          estimatedFare: distance * v.rate_per_km + v.base_fare,
+        }));
 
         setVehicles(vehiclesWithFare);
         // console.log("Fetched vehicles:", vehiclesWithFare);
-      } catch (err: any) {
+      } catch (err) {
         console.error("Error fetching vehicles:", err);
         setError("Failed to fetch available vehicles. Please try again later.");
       } finally {
@@ -107,7 +94,7 @@ function FareEstimationContent() {
     // 3. The dependency array now uses the stable, memoized object
   }, [validationResult]);
 
-  const handleBooking = (vehicle: Vehicle) => {
+  const handleBooking = (vehicle) => {
     if (!validationResult.success) return; // Guard clause
 
     const tripDetails = {

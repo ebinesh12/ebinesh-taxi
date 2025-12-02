@@ -13,32 +13,13 @@ import {
 import { BookingUpdateForm } from "./booking-update-form"; // Client component for the form
 import { useParams } from "next/navigation";
 
-// Define a detailed type for a single booking
-export type BookingDetail = {
-  booking_id: number;
-  booking_ref: string;
-  pickup_location: string;
-  drop_location: string;
-  trip_date: string;
-  trip_time: string;
-  customer_name: string;
-  customer_mobile: string;
-  customer_email: string;
-  estimated_fare: number;
-  booking_status: "pending" | "confirmed" | "cancelled";
-  created_at: string;
-  vehicles: {
-    name: string;
-  } | null;
-};
-
 export default function BookingDetailPage() {
   const params = useParams();
-  const id = params?.id as string; // Get ID from URL and assert as string
+  const id = params?.id; // Get ID from URL and assert as string
   // State to hold vehicle data, loading status, and errors
-  const [booking, setBooking] = useState<BookingDetail | null>(null);
+  const [booking, setBooking] = useState();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (!id) {
@@ -62,7 +43,7 @@ export default function BookingDetailPage() {
         if (data) {
           setBooking(data);
         }
-      } catch (err: unknown) {
+      } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
         } else {
@@ -92,13 +73,7 @@ export default function BookingDetailPage() {
   }
 
   // Helper component for displaying details cleanly
-  const DetailItem = ({
-    label,
-    value,
-  }: {
-    label: string;
-    value: string | number;
-  }) => (
+  const DetailItem = ({ label, value }) => (
     <div>
       <p className="text-sm font-medium text-muted-foreground">{label}</p>
       <p className="text-lg font-semibold">{value}</p>

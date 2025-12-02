@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Loader2 } from "lucide-react"; // For the loading spinner
 import { supabase } from "@/utils/supabase/client";
 
@@ -28,20 +27,9 @@ import {
 } from "@/components/ui/card";
 import { verifySchema } from "@/services/schema";
 
-// Define a type for our trip details for type safety
-type TripDetails = {
-  pickup: string;
-  drop: string;
-  date: string;
-  time: string;
-  vehicleId: string;
-  vehicleName: string;
-  estimatedFare: number;
-};
-
 export default function BookingVerificationPage() {
-  const [tripDetails, setTripDetails] = useState<TripDetails | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [tripDetails, setTripDetails] = useState(null);
+  const [error, setError] = useState("");
   const router = useRouter();
 
   // Safely get trip details from session storage on component mount
@@ -60,7 +48,7 @@ export default function BookingVerificationPage() {
   }, [router]);
 
   // Initialize react-hook-form
-  const form = useForm<z.infer<typeof verifySchema>>({
+  const form = useForm({
     resolver: zodResolver(verifySchema),
     defaultValues: {
       name: "",
@@ -74,7 +62,7 @@ export default function BookingVerificationPage() {
   const generateBookingId = () => `TXN${Date.now()}`;
 
   // This function only runs if the form validation passes
-  async function onSubmit(values: z.infer<typeof verifySchema>) {
+  async function onSubmit(values) {
     if (!tripDetails) {
       setError("Trip details are missing. Please start over.");
       return;
@@ -106,7 +94,7 @@ export default function BookingVerificationPage() {
       // On success
       sessionStorage.removeItem("tripDetails");
       router.push(`/booking-success?ref=${data.booking_ref}`);
-    } catch (err: any) {
+    } catch (err) {
       console.error("Booking failed:", err);
       setError(`Booking failed: ${err.message}. Please try again.`);
     }
