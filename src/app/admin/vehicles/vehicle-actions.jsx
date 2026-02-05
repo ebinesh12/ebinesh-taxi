@@ -1,9 +1,11 @@
-"use client"; // This is a client component
+"use client";
 
+import React from "react";
 import Link from "next/link";
-import { deleteVehicle } from "./actions"; // Your server action for deleting
+import { Edit2, Trash2, AlertTriangle, ChevronRight } from "lucide-react";
+import { toast } from "sonner";
+import { deleteVehicle } from "./actions";
 
-// Import Shadcn UI and Lucide Icons
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -16,61 +18,65 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Edit, Trash } from "lucide-react";
-import { toast } from "sonner";
 
 export function VehicleActions({ vehicleId }) {
   const handleDeleteAction = async () => {
     const result = await deleteVehicle(vehicleId);
-
     if (result?.error) {
-      toast.error("Failed to delete vehicle", {
-        description: result.error,
-      });
+      toast.error("Telemetry error", { description: result.error });
     } else {
-      toast.success("Vehicle deleted successfully!");
+      toast.success("Asset decommissioned successfully.");
     }
   };
 
   return (
-    <div className="flex items-center justify-end space-x-2">
-      {/* Edit Button */}
-      <Button variant="ghost" size="icon" asChild className="text-blue-500">
+    <div className="flex items-center justify-end gap-1">
+      <Button
+        variant="ghost"
+        size="icon"
+        asChild
+        className="h-9 w-9 rounded-lg hover:bg-amber-100 hover:text-amber-600 dark:hover:bg-amber-400/10 dark:hover:text-amber-400 transition-colors"
+      >
         <Link href={`/admin/vehicles/edit/${vehicleId}`}>
-          <Edit className="h-4 w-4" />
-          <span className="sr-only">Edit</span>
+          <Edit2 className="h-4 w-4" />
+          <span className="sr-only">Edit Asset</span>
         </Link>
       </Button>
 
-      {/* Delete Confirmation Dialog */}
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="ghost" size="icon" className="text-red-500">
-            <Trash className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-9 w-9 rounded-lg hover:bg-rose-100 hover:text-rose-600 dark:hover:bg-rose-400/10 dark:hover:text-rose-400 transition-colors"
+          >
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Delete Asset</span>
           </Button>
         </AlertDialogTrigger>
-        <AlertDialogContent>
+        <AlertDialogContent className="rounded-[2rem] border-none shadow-2xl bg-white dark:bg-zinc-900">
           <AlertDialogHeader>
-            <AlertDialogTitle className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
-              Are you absolutely sure?
+            <div className="mx-auto bg-rose-100 dark:bg-rose-900/30 p-3 rounded-2xl w-fit mb-4">
+              <AlertTriangle className="h-6 w-6 text-rose-600" />
+            </div>
+            <AlertDialogTitle className="text-2xl font-black tracking-tighter uppercase italic text-center">
+              Decommission <span className="text-rose-500">Asset?</span>
             </AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              vehicle and remove its data from our servers.
+            <AlertDialogDescription className="text-center text-zinc-500 dark:text-zinc-400">
+              This action is irreversible. The vehicle telemetry and history
+              will be purged from the dispatch system.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-500 to-indigo-700">
-              Cancel
+          <AlertDialogFooter className="flex-col sm:flex-row gap-3 pt-4">
+            <AlertDialogCancel className="sm:flex-1 rounded-xl h-12 border-slate-200 dark:border-zinc-800 font-bold uppercase tracking-widest text-[10px]">
+              Abort
             </AlertDialogCancel>
-            {/* The form is now inside the dialog */}
-            <form action={handleDeleteAction}>
+            <form action={handleDeleteAction} className="sm:flex-1">
               <AlertDialogAction
                 type="submit"
-                className="bg-gradient-to-r from-fuchsia-500 to-indigo-700"
+                className="w-full rounded-xl h-12 bg-rose-600 hover:bg-rose-700 text-white font-bold uppercase tracking-widest text-[10px]"
               >
-                Yes, Delete Vehicle
+                Confirm Deletion
               </AlertDialogAction>
             </form>
           </AlertDialogFooter>

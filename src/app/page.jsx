@@ -1,173 +1,235 @@
-// app/page.js
 "use client";
+
+import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  Car,
+  ShieldCheck,
+  Clock,
+  MapPin,
+  ArrowRight,
+  Star,
+  Users,
+  Navigation,
+} from "lucide-react";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
+const cities = [
+  {
+    name: "Chennai",
+    image:
+      "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=800",
+    desc: "The Detroit of Asia",
+  },
+  {
+    name: "Coimbatore",
+    image:
+      "https://images.unsplash.com/photo-1623150531471-972166663f70?q=80&w=800",
+    desc: "Manchester of South",
+  },
+  {
+    name: "Madurai",
+    image:
+      "https://images.unsplash.com/photo-1621252179027-94459d278660?q=80&w=800",
+    desc: "Athens of the East",
+  },
+  {
+    name: "Tiruchirappalli",
+    image:
+      "https://images.unsplash.com/photo-1626014303757-636611689477?q=80&w=800",
+    desc: "The Rock Fort City",
+  },
+  {
+    name: "Salem",
+    image:
+      "https://images.unsplash.com/photo-1634148418048-0f0474665476?q=80&w=800",
+    desc: "City of Steel",
+  },
+  {
+    name: "Thanjavur",
+    image:
+      "https://images.unsplash.com/photo-1600673311484-3235b2c9d0a4?q=80&w=800",
+    desc: "City of Temples",
+  },
+];
 
 export default function Home() {
-  const cities = [
-    {
-      name: "Chennai",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/3/32/Chennai_Central.jpg",
-      description: "The Detroit of Asia",
-    },
-    {
-      name: "Coimbatore",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Town_Hall%2C_Coimbatore.jpg/1024px-Town_Hall%2C_Coimbatore.jpg",
-      description: "Manchester of South India",
-    },
-    {
-      name: "Madurai",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Meenakshi_Amman_West_Tower.jpg/1920px-Meenakshi_Amman_West_Tower.jpg",
-      description: "The Athens of the East",
-    },
-    {
-      name: "Tiruchirappalli",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Rock_Fortress_-_Tiruchirappalli_-_India.JPG/1024px-Rock_Fortress_-_Tiruchirappalli_-_India.JPG",
-      description: "The Rock Fort City",
-    },
-    {
-      name: "Erode",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Erode_District_Collector%27s_Office.jpg/1024px-Erode_District_Collector%27s_Office.jpg",
-      description: "The Turmeric City",
-    },
-    {
-      name: "Salem",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/A_photo_of_Salem_Steel_Plant_entrance.JPG/1024px-A_photo_of_Salem_Steel_Plant_entrance.JPG",
-      description: "The City of Steel",
-    },
-    {
-      name: "Thanjavur",
-      image:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Brihadisvara_Temple%2C_Thanjavur%2C_Tamil_Nadu%2C_India.jpg/800px-Brihadisvara_Temple%2C_Thanjavur%2C_Tamil_Nadu%2C_India.jpg",
-      description: "The City of Temples",
-    },
-  ];
   return (
-    <div>
+    <div className="min-h-screen bg-background text-foreground selection:bg-amber-400/30">
       <Header />
-      <div className="flex flex-col min-h-screen">
-        <main className="flex flex-col flex-1">
-          {/* Hero Section */}
-          <div className="relative">
-            <div className="h-96 w-full">
+
+      <main>
+        {/* --- HERO SECTION --- */}
+        <section className="relative h-[90vh] w-full overflow-hidden">
+          <Image
+            src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070"
+            alt="City Taxi"
+            fill
+            className="object-cover brightness-[0.4] dark:brightness-[0.3]"
+            priority
+          />
+          <div className="absolute inset-0 flex items-center">
+            <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                className="space-y-6"
+              >
+                <Badge
+                  variant="outline"
+                  className="text-amber-400 border-amber-400/50 px-4 py-1 backdrop-blur-md"
+                >
+                  ✨ Premium Ride Experience
+                </Badge>
+                <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-white">
+                  Your Gateway to <br />
+                  <span className="text-amber-400">Any Destination</span>
+                </h1>
+                <p className="text-lg text-slate-300 max-w-lg leading-relaxed">
+                  Reliable, safe, and professional transportation services
+                  tailored for your comfort across Tamil Nadu.
+                </p>
+                <div className="flex flex-wrap gap-4">
+                  <Button
+                    size="lg"
+                    className="bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold px-8"
+                  >
+                    Book a Ride Now
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="text-white border-white/20 hover:bg-white/10 backdrop-blur-md"
+                  >
+                    View Pricing
+                  </Button>
+                </div>
+              </motion.div>
+
+              {/* Quick Booking Preview Card */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="hidden lg:block bg-white/10 dark:bg-black/40 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 text-white mb-6">
+                    <Navigation className="text-amber-400 w-6 h-6" />
+                    <h3 className="text-xl font-bold">Quick Dispatch</h3>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-4">
+                      <MapPin className="text-amber-400 w-5 h-5" />
+                      <span className="text-slate-300 text-sm">
+                        Pickup Location
+                      </span>
+                    </div>
+                    <div className="p-4 bg-white/5 border border-white/10 rounded-xl flex items-center gap-4">
+                      <Navigation className="text-green-400 w-5 h-5" />
+                      <span className="text-slate-300 text-sm">
+                        Drop-off Destination
+                      </span>
+                    </div>
+                  </div>
+                  <Button className="w-full bg-white text-slate-900 hover:bg-slate-200 py-6 text-base font-bold">
+                    Check Availability
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* --- STATS BAR --- */}
+        <section className="bg-slate-50 dark:bg-zinc-900 border-y border-border">
+          <div className="container mx-auto px-6 py-12">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {[
+                { label: "Expert Drivers", val: "1,294+", icon: Users },
+                { label: "Happy Clients", val: "35k+", icon: Star },
+                { label: "City Routes", val: "150+", icon: Navigation },
+                { label: "Safety Rating", val: "4.9/5", icon: ShieldCheck },
+              ].map((stat, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col items-center text-center space-y-2"
+                >
+                  <div className="p-3 bg-amber-400/10 rounded-2xl">
+                    <stat.icon className="w-6 h-6 text-amber-500" />
+                  </div>
+                  <h4 className="text-3xl font-bold tracking-tighter">
+                    {stat.val}
+                  </h4>
+                  <p className="text-sm text-muted-foreground uppercase tracking-widest font-semibold">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* --- WHY CHOOSE US --- */}
+        <section className="py-24 container mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-amber-400/20 rounded-[2rem] blur-2xl group-hover:bg-amber-400/30 transition duration-500" />
               <Image
-                src="https://picsum.photos/id/183/1000/600"
-                layout="fill"
-                objectFit="cover"
-                objectPosition="center"
-                alt="Full-width Image"
+                src="https://images.unsplash.com/photo-1559149206-35360f7bc19c?q=80&w=800"
+                width={800}
+                height={600}
+                className="relative rounded-[2rem] object-cover shadow-2xl"
+                alt="Modern Fleet"
               />
             </div>
-            <div className="absolute inset-0 bg-black/60 bg-opacity-50 flex items-center">
-              <div className="container mx-auto px-4 text-white">
-                <div className="w-full md:w-1/2">
-                  <div className="flex items-center mb-5">
-                    <span className="w-2 h-8 bg-indigo-500 mr-3"></span>
-                    <p className="text-sm uppercase tracking-widest">
-                      Taxi Services
-                    </p>
-                  </div>
-                  <h1 className="text-4xl md:text-6xl font-bold">
-                    Your Gateway
-                  </h1>
-                  <h1 className="text-4xl md:text-6xl font-bold">
-                    to any Destination
-                  </h1>
-                  <p className="mt-5 text-sm font-semibold">
-                    Transportation is a vital aspect of modern society,
-                    facilitating the movement of people from one place to
-                    another.
-                  </p>
-                  <Button
-                    asChild
-                    className="bg-gradient-to-r from-fuchsia-500 to-indigo-700 mt-5"
-                  >
-                    <a href="/booking-ride">Explore More</a>
-                  </Button>
-                </div>
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <Badge className="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-none px-4 py-1">
+                  The Better Choice
+                </Badge>
+                <h2 className="text-4xl font-bold tracking-tight">
+                  We Prioritize Your Journey Comfort
+                </h2>
+                <p className="text-muted-foreground leading-relaxed italic">
+                  &ldquo;Our mission is to bridge the gap between efficiency and
+                  luxury, ensuring every mile you travel with us feels like a
+                  premium experience.&rdquo;
+                </p>
               </div>
-            </div>
-          </div>
 
-          {/* Why Us Section */}
-          <div className="bg-white">
-            <div className="container mx-auto px-4 py-16">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div>
-                  <div className="flex items-center mb-5">
-                    <span className="w-2 h-8 bg-indigo-500 mr-3"></span>
-                    <p className="text-xs uppercase tracking-widest">Why Us</p>
-                  </div>
-                  <h2 className="text-3xl font-medium mb-5">
-                    We really consider your travelling
-                  </h2>
-                  <p className="text-sm mb-5">
-                    Both taxi and bus services contribute to the overall
-                    transportation infrastructure, offering solutions for
-                    different travel needs and preferences.
-                  </p>
-                  <Button asChild>
-                    <Link
-                      href="/booking-ride"
-                      className="bg-gradient-to-r from-fuchsia-500 to-indigo-700"
-                    >
-                      Booking Now
-                    </Link>
-                  </Button>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
-                    <Image
-                      src="https://picsum.photos/id/376/1000/600"
-                      width={400}
-                      height={250}
-                      className="rounded-lg object-cover"
-                      alt="taxi"
-                    />
-                  </div>
-                  <div>
-                    <Image
-                      src="https://picsum.photos/id/376/1000/600"
-                      width={200}
-                      height={150}
-                      className="rounded-lg object-cover border-4 border-white -mt-16"
-                      alt="Taxi Interior"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Transporting Across The City Section */}
-          <div className="bg-indigo-700/60 py-16">
-            <div className="container mx-auto px-4">
-              <h2 className="text-center text-white text-3xl font-medium mb-10">
-                Transporting Across The City
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-                {cities.map((city) => (
-                  <div key={city.name} className="relative flex-shrink-0">
-                    <Image
-                      src={city.image}
-                      width={192}
-                      height={240}
-                      className="object-cover h-full rounded-lg"
-                      alt={city.name}
-                    />
-                    <div className="absolute bottom-0 h-24 w-full bg-gradient-to-t from-slate-950 to-transparent p-3 flex flex-col justify-end rounded-b-lg">
-                      <p className="font-medium text-white">{city.name}</p>
-                      <p className="text-xs font-semibold text-muted-foreground">
-                        {city.description}
+              <div className="grid gap-6">
+                {[
+                  {
+                    title: "24/7 Availability",
+                    desc: "Always on the road, whenever you need us.",
+                    icon: Clock,
+                  },
+                  {
+                    title: "Secure Payments",
+                    desc: "Digital, hassle-free transactions.",
+                    icon: ShieldCheck,
+                  },
+                  {
+                    title: "Eco-Friendly Fleet",
+                    desc: "Modern vehicles with low emissions.",
+                    icon: Car,
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="flex gap-4">
+                    <div className="mt-1 bg-primary text-primary-foreground p-2 rounded-lg">
+                      <item.icon className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold">{item.title}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {item.desc}
                       </p>
                     </div>
                   </div>
@@ -175,53 +237,89 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </section>
 
-          {/* What We Do Section */}
-          <div className="mx-auto w-full px-4 lg:px-18 py-16">
-            <div className="flex items-center  mb-5">
-              <span className="w-2 h-8 bg-indigo-500 mr-3"></span>
-              <p className="text-xs uppercase tracking-widest">What we do</p>
-            </div>
-            <h2 className="text-3xl font-medium">Transportation and Service</h2>
-            <p className="text-sm my-8">
-              Taxis provide a more personalized and on-demand service, while
-              buses offer a systematic and mass transit solution for larger
-              groups of people.
-            </p>
-          </div>
-
-          {/* Statistics Section */}
-          <div className="bg-gray-100 py-16">
-            <div className="container mx-auto px-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
-                <div className="flex items-center justify-center">
-                  <p className="text-4xl font-medium mr-5">1294</p>
-                  <span className="h-5 w-5 bg-indigo-500"></span>
-                  <p className="w-fit px-5 text-sm font-medium">Taxi Drivers</p>
-                </div>
-                <div className="flex items-center justify-center">
-                  <p className="text-4xl font-medium mr-5">3594</p>
-                  <span className="h-5 w-5 bg-indigo-500"></span>
-                  <p className="w-fit px-5 text-sm font-medium">Customers</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Our Drivers Section */}
-          <div className="container mx-auto px-4 py-16">
-            <div className="text-center mb-10">
-              <div className="flex justify-center items-center mb-2">
-                <span className="w-2 h-8 bg-indigo-500 mr-3"></span>
-                <p className="text-sm uppercase tracking-widest">
-                  The Transporters
+        {/* --- CITY GRID --- */}
+        <section className="bg-zinc-950 py-24 text-white">
+          <div className="container mx-auto px-6">
+            <div className="flex justify-between items-end mb-12">
+              <div className="space-y-4">
+                <h2 className="text-4xl font-bold tracking-tight">
+                  Serving the Heart of Tamil Nadu
+                </h2>
+                <p className="text-slate-400 max-w-xl">
+                  Explore our extensive network covering major industrial and
+                  cultural hubs.
                 </p>
               </div>
-              <h2 className="text-4xl font-medium">Our Drivers</h2>
+              <Button variant="link" className="text-amber-400 gap-2 group p-0">
+                View All Cities{" "}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {cities.map((city, i) => (
+                <motion.div
+                  key={city.name}
+                  whileHover={{ y: -10 }}
+                  className="group relative h-80 overflow-hidden rounded-3xl"
+                >
+                  <Image
+                    src={city.image}
+                    alt={city.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+                  <div className="absolute bottom-0 p-6 w-full">
+                    <p className="text-amber-400 text-xs font-bold uppercase tracking-widest mb-1">
+                      {city.desc}
+                    </p>
+                    <h3 className="text-2xl font-bold text-white">
+                      {city.name}
+                    </h3>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
-        </main>
-      </div>
+        </section>
+
+        {/* --- CALL TO ACTION --- */}
+        <section className="py-24 container mx-auto px-6 text-center">
+          <Card className="bg-amber-400 dark:bg-amber-500 border-none overflow-hidden relative">
+            <div className="absolute right-0 top-0 opacity-10 translate-x-1/4 -translate-y-1/4">
+              <Car className="w-96 h-96 -rotate-12 text-slate-950" />
+            </div>
+            <CardContent className="p-12 md:p-20 flex flex-col items-center relative z-10">
+              <h2 className="text-3xl md:text-5xl font-black text-slate-950 mb-6 uppercase tracking-tighter">
+                Ready to Start Your Journey?
+              </h2>
+              <p className="text-slate-900/80 font-medium mb-10 max-w-2xl text-lg">
+                Join over 35,000 satisfied passengers who trust us for their
+                daily commutes and special trips.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button
+                  size="lg"
+                  className="bg-slate-950 text-white rounded-full px-10 h-14 text-base"
+                >
+                  Book Your First Ride
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="bg-transparent border-slate-950/20 text-slate-950 hover:bg-slate-950/10 rounded-full px-10 h-14 text-base"
+                >
+                  Contact Support
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+      </main>
+
       <Footer />
     </div>
   );
