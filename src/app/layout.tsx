@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="en">
-      <body className={`antialiased`}>
+      <body className={`antialiased dark`}>
         <ReduxProvider>
           {children}
           <Toaster position="top-center" richColors />

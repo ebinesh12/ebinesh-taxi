@@ -29,6 +29,7 @@ const NAV_ITEMS = [
   { name: "Our Fleet", href: "/fleet" },
   { name: "Services", href: "/services" },
   { name: "About Us", href: "/about" },
+  { name: "Contact", href: "/contact" },
 ];
 
 const Header = () => {

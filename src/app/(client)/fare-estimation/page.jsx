@@ -4,14 +4,13 @@
 import React, { useEffect, useState, Suspense, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ArrowLeft,
   Users,
   Briefcase,
   Info,
   ChevronRight,
-  MapPin,
   Navigation,
   Clock,
 } from "lucide-react";
@@ -171,7 +170,7 @@ function FareEstimationContent() {
 
       <div className="container mx-auto p-4 md:p-8">
         <header className="mb-10 mt-4">
-          <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase italic italic">
+          <h1 className="text-3xl md:text-4xl font-black tracking-tighter uppercase italic">
             Select Your <span className="text-amber-500">Ride</span>
           </h1>
           <p className="text-muted-foreground">
