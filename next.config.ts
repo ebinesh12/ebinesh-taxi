@@ -7,12 +7,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "upload.wikimedia.org",
-        port: "",
-        pathname: "**",
-      },
-      {
-        protocol: "https",
         hostname: "img.icons8.com",
         port: "",
         pathname: "**",
@@ -20,6 +14,12 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "picsum.photos",
+        port: "",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
         port: "",
         pathname: "**",
       },

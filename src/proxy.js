@@ -24,6 +24,10 @@ export async function proxy(request) {
     path === "/booking-success" ||
     path === "/booking-verification" ||
     path === "/fare-estimation" ||
+    path === "/contact" ||
+    path === "/about" ||
+    path === "/services" ||
+    path === "/fleet" ||
     path === "/auth/login" ||
     path === "/auth/register";
 
