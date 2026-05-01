@@ -74,7 +74,7 @@ export default function FleetPage() {
         if (error) throw error;
         setVehicles(data || []);
       } catch (err) {
-        console.error(err);
+        console?.error(err);
       } finally {
         setLoading(false);
       }
