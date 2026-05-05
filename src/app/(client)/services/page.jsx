@@ -8,166 +8,219 @@ import {
   Clock,
   MapPin,
   ArrowRight,
-  CheckCircle2,
-  CarFront,
-  Navigation,
+  ShieldCheck,
+  Zap,
+  Sparkles,
+  ChevronRight,
+  HeadphonesIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const serviceClasses = [
   {
-    title: "Airport Transfer",
+    title: "Airport Elite",
     icon: Plane,
-    desc: "Fixed-rate airport pickups and drop-offs with flight tracking and meet-and-greet.",
+    desc: "Fixed-rate sanctuary. Flight tracking and professional meet-and-greet as standard.",
     price: "₹499",
     features: ["60 min free waiting", "Flight tracking", "Luggage assistance"],
+    gradient: "from-emerald-500/20 to-teal-500/10",
+    accent: "text-emerald-400",
   },
   {
-    title: "Corporate Fleet",
+    title: "Executive Suite",
     icon: Briefcase,
-    desc: "Dedicated account management for business professionals and executive teams.",
+    desc: "Mobile offices for the modern leader. Silent cabins and premium amenities.",
     price: "Custom",
     features: [
       "Priority dispatch",
       "Monthly billing",
       "Premium executive sedans",
     ],
+    gradient: "from-blue-500/20 to-indigo-500/10",
+    accent: "text-blue-400",
   },
   {
-    title: "Outstation",
+    title: "Intercity Prime",
     icon: MapPin,
-    desc: "Inter-city travel with professional pilots for long-distance comfort and safety.",
+    desc: "Crossing borders in absolute comfort. High-speed Wi-Fi and ergonomic seating.",
     price: "₹12/KM",
     features: ["Transparent pricing", "One-way/Round-trip", "Verified pilots"],
+    gradient: "from-violet-500/20 to-purple-500/10",
+    accent: "text-violet-400",
   },
   {
-    title: "Hourly Rental",
+    title: "Urban Flex",
     icon: Clock,
-    desc: "Book a car and a driver for several hours. Ideal for local city errands or meetings.",
+    desc: "Your car, your schedule. Hourly booking for the city's fast-movers.",
     price: "₹250/Hr",
     features: ["Unlimited stops", "Professional pilot", "City-wide coverage"],
+    gradient: "from-rose-500/20 to-orange-500/10",
+    accent: "text-rose-400",
   },
 ];
 
 export default function ServicesPage() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-zinc-950 transition-colors duration-500 pb-20">
-      {/* 1. Header */}
-      <header className="py-20 bg-zinc-900 text-white overflow-hidden relative">
+    <div className="min-h-screen bg-[#0a0a0a] text-slate-200 selection:bg-emerald-500/30 pb-24">
+      {/* 1. Dynamic Header */}
+      <header className="relative py-24 lg:py-36 overflow-hidden">
+        {/* Animated Background Mesh */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-emerald-900/20 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-900/20 rounded-full blur-[120px]" />
+        </div>
+
         <div className="container mx-auto px-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="max-w-2xl space-y-4"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="max-w-3xl"
           >
-            <Badge className="bg-amber-400 text-slate-950 border-none font-bold uppercase tracking-tighter">
-              Service Catalog
+            <Badge className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-6 px-4 py-1.5 uppercase tracking-widest text-[10px] font-bold">
+              Premium Tiers
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic leading-none">
-              Dispatch{" "}
-              <span className="text-amber-500 text-white">Solutions.</span>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-white mb-6">
+              Precision{" "}
+              <span className="text-emerald-500 italic">Mobility.</span>
             </h1>
-            <p className="text-zinc-400 text-lg">
-              Tailored transportation classes for every urban requirement.
+            <p className="text-lg md:text-xl text-slate-400 max-w-xl leading-relaxed font-light">
+              We’ve engineered our fleet tiers to harmonize with your lifestyle,
+              ensuring every journey is a masterclass in efficiency.
             </p>
           </motion.div>
         </div>
-        <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
-            backgroundSize: "40px 40px",
-          }}
-        />
       </header>
 
       {/* 2. Service Cards Grid */}
-      <section className="container mx-auto px-6 -mt-10 relative z-20">
-        <div className="grid md:grid-cols-2 gap-8">
+      <section className="container mx-auto px-6 -mt-16 relative z-20">
+        <div className="grid lg:grid-cols-2 gap-6">
           {serviceClasses.map((service, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.1 }}
+              viewport={{ once: true }}
+              className="group"
             >
-              <Card className="border-none shadow-2xl bg-white dark:bg-zinc-900 rounded-[2.5rem] overflow-hidden group">
-                <div className="h-2 w-full bg-amber-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <CardHeader className="p-8 md:p-12 pb-4">
-                  <div className="flex justify-between items-start">
-                    <div className="p-4 bg-slate-100 dark:bg-zinc-800 rounded-2xl group-hover:bg-amber-400 group-hover:text-slate-950 transition-colors">
-                      <service.icon className="w-8 h-8" />
+              <div className="relative h-full p-[1px] rounded-[2.5rem] bg-gradient-to-b from-white/10 to-transparent overflow-hidden">
+                <div className="relative h-full bg-zinc-950/80 backdrop-blur-xl rounded-[2.5rem] p-8 md:p-12 flex flex-col justify-between">
+                  {/* Hover Background Glow */}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                  />
+
+                  <div className="relative z-10">
+                    <div className="flex justify-between items-start mb-10">
+                      <div
+                        className={`p-4 rounded-2xl bg-zinc-900 border border-white/5 ${service.accent} group-hover:scale-110 transition-transform`}
+                      >
+                        <service.icon size={32} />
+                      </div>
+                      <div className="text-right">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 block mb-1">
+                          Base Rate
+                        </span>
+                        <span
+                          className={`text-3xl font-bold tracking-tight ${service.accent}`}
+                        >
+                          {service.price}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">
-                        Starting From
-                      </p>
-                      <p className="text-2xl font-black tracking-tighter italic text-amber-500">
-                        {service.price}
-                      </p>
+
+                    <h3 className="text-3xl font-bold text-white mb-4 group-hover:translate-x-1 transition-transform">
+                      {service.title}
+                    </h3>
+                    <p className="text-slate-400 mb-8 leading-relaxed font-light text-lg">
+                      {service.desc}
+                    </p>
+
+                    <div className="grid sm:grid-cols-2 gap-4 mb-10">
+                      {service.features.map((feat, j) => (
+                        <div
+                          key={j}
+                          className="flex items-center gap-3 text-sm text-slate-300"
+                        >
+                          <div
+                            className={`w-1.5 h-1.5 rounded-full ${service.accent.replace("text", "bg")}`}
+                          />
+                          {feat}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <CardTitle className="text-3xl font-black tracking-tighter uppercase italic mt-6">
-                    {service.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="px-8 md:px-12 space-y-6">
-                  <p className="text-slate-500 dark:text-zinc-400 leading-relaxed">
-                    {service.desc}
-                  </p>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {service.features.map((feat, j) => (
-                      <li
-                        key={j}
-                        className="flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-zinc-300"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-amber-500" />
-                        {feat}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter className="p-8 md:p-12 pt-0">
-                  <Button className="w-full h-14 rounded-2xl bg-slate-950 dark:bg-white dark:text-slate-950 font-black uppercase tracking-widest text-xs group">
-                    Book {service.title}
-                    <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </CardFooter>
-              </Card>
+
+                  <div className="relative z-10 mt-auto">
+                    <Button className="group/btn w-full h-16 rounded-2xl bg-white text-black hover:bg-emerald-500 hover:text-white transition-all duration-300 font-bold text-base uppercase tracking-wider">
+                      Request Dispatch
+                      <ChevronRight className="ml-2 w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* 3. Call to Action */}
-      <section className="container mx-auto px-6 py-24 text-center">
-        <div className="bg-amber-400 dark:bg-amber-500 rounded-[3rem] p-12 md:p-20 relative overflow-hidden">
-          <div className="relative z-10 flex flex-col items-center space-y-6">
-            <Navigation className="w-12 h-12 text-slate-950 mb-4 animate-bounce" />
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic text-slate-950">
-              Need a Custom Route?
-            </h2>
-            <p className="text-slate-900/80 font-medium max-w-xl text-lg">
-              Our dispatchers are available 24/7 to arrange special travel
-              requirements for your fleet.
-            </p>
-            <Button
-              variant="outline"
-              className="h-14 px-10 rounded-full border-slate-950/20 text-slate-950 font-bold bg-transparent hover:bg-slate-950/10"
+      {/* 3. Trust Bar */}
+      <section className="container mx-auto px-6 py-20">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-y border-white/5">
+          {[
+            { icon: ShieldCheck, label: "Insured Trips" },
+            { icon: Zap, label: "Instant Booking" },
+            { icon: Sparkles, label: "Pristine Fleet" },
+            { icon: HeadphonesIcon, label: "24/7 Support" },
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              className="flex flex-col items-center gap-3 text-slate-500"
             >
-              Contact Dispatch Center
-            </Button>
+              <item.icon size={20} className="text-emerald-500/50" />
+              <span className="text-[10px] font-bold uppercase tracking-widest">
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 4. Interactive Call to Action */}
+      <section className="container mx-auto px-6">
+        <div className="relative bg-emerald-600 rounded-[3rem] p-12 md:p-20 overflow-hidden group">
+          {/* Decorative Pattern */}
+          <div
+            className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 2px 2px, white 1px, transparent 0)",
+              backgroundSize: "32px 32px",
+            }}
+          />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="text-center md:text-left space-y-4">
+              <h2 className="text-4xl md:text-6xl font-bold text-white tracking-tighter">
+                Custom Logistics <br />
+                <span className="text-emerald-200">Requirements?</span>
+              </h2>
+              <p className="text-emerald-100/80 text-lg max-w-md">
+                Our global dispatch center is ready to handle high-volume
+                corporate movements and specialized events.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="px-10 py-5 bg-white text-emerald-700 rounded-2xl font-bold hover:shadow-2xl hover:scale-105 transition-all">
+                Contact Concierge
+              </button>
+              <button className="px-10 py-5 bg-emerald-700 text-white border border-emerald-500 rounded-2xl font-bold hover:bg-emerald-800 transition-all">
+                View Fleet Gallery
+              </button>
+            </div>
           </div>
-          {/* Background Symbol */}
-          <CarFront className="absolute -bottom-10 -right-10 w-96 h-96 opacity-10 -rotate-12 text-slate-950" />
         </div>
       </section>
     </div>

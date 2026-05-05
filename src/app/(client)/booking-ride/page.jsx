@@ -4,7 +4,7 @@ import { useState, useEffect, forwardRef } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -16,37 +16,29 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import {
-  Clock,
-  MapPin,
-  Navigation,
-  Calendar as CalendarIcon,
+  Timer,
+  LocateFixed,
+  Flag,
+  CalendarRange,
   ChevronRight,
-  CircleDot,
+  Activity,
+  Zap,
 } from "lucide-react";
 import { rideSchema } from "@/services/schema";
 
-/**
- * Refactored TimePicker with better integration
- */
 const TimePicker = forwardRef(({ value, onChange, ...props }, ref) => {
   return (
     <div className="relative group">
-      <Clock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-amber-500 transition-colors" />
+      <Timer className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-rose-500 group-focus-within:text-orange-400 transition-colors" />
       <Input
         ref={ref}
         type="time"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="pl-10 focus-visible:ring-amber-500"
+        className="pl-10 bg-zinc-900/50 border-white/5 focus:border-orange-500/50 focus:ring-orange-500/20 text-white rounded-xl"
         {...props}
       />
     </div>
@@ -57,31 +49,17 @@ TimePicker.displayName = "TimePicker";
 export default function RideFinderForm() {
   const [serviceType, setServiceType] = useState("One-Way");
   const [minDate, setMinDate] = useState("");
-  const [maxDate, setMaxDate] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    const today = new Date();
-    const oneMonthFromNow = new Date();
-    oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1);
-
-    const formatDate = (date) => {
-      return date.toISOString().split("T")[0];
-    };
-
+    const today = new Date().toISOString().split("T")[0];
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMinDate(formatDate(today));
-    setMaxDate(formatDate(oneMonthFromNow));
+    setMinDate(today);
   }, []);
 
   const form = useForm({
     resolver: zodResolver(rideSchema),
-    defaultValues: {
-      pickup: "",
-      drop: "",
-      date: "",
-      time: "",
-    },
+    defaultValues: { pickup: "", drop: "", date: "", time: "" },
   });
 
   function onSubmit(values) {
@@ -93,100 +71,92 @@ export default function RideFinderForm() {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-slate-50 dark:bg-zinc-950 px-4 py-12 overflow-hidden">
-      {/* Decorative Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-20 dark:opacity-10 pointer-events-none">
-        <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-400 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-slate-400 dark:bg-zinc-800 rounded-full blur-[120px]" />
+    <section className="relative min-h-screen flex items-center justify-center bg-[#020617] px-4 py-16 overflow-hidden">
+      {/* 1. Animated Tech Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[70%] h-[70%] bg-orange-600/10 rounded-full blur-[120px] animate-pulse" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-rose-600/10 rounded-full blur-[120px]" />
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.83L.83 55.457l-.83-.83L54.627 0zM5.373 0l-.83.83L59.17 55.457l.83-.83L5.373 0z' fill='%23ffffff' fill-opacity='1' fill-rule='evenodd'%3E%3C/path%3E%3C/svg%3E")`,
+          }}
+        />
       </div>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-xl z-10"
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full max-w-2xl z-10"
       >
-        <Card className="border-none shadow-2xl bg-white/80 dark:bg-zinc-900/90 backdrop-blur-xl">
-          <CardHeader className="text-center pb-2">
-            <div className="mx-auto bg-amber-400 p-3 rounded-2xl w-fit mb-4 shadow-lg shadow-amber-400/20">
-              <Navigation className="h-6 w-6 text-slate-950 fill-current" />
+        <Card className="border-white/10 bg-zinc-950/40 backdrop-blur-3xl shadow-[0_0_50px_-12px_rgba(249,115,22,0.2)] rounded-[2.5rem] overflow-hidden">
+          {/* Header Section */}
+          <div className="p-8 md:p-12 pb-0 text-center space-y-4">
+            <div className="flex justify-center">
+              <div className="bg-gradient-to-br from-orange-500 to-rose-600 p-4 rounded-2xl rotate-3 shadow-lg shadow-orange-500/20">
+                <Zap className="h-6 w-6 text-white fill-white" />
+              </div>
             </div>
-            <CardTitle className="text-3xl font-black tracking-tight uppercase italic dark:text-white">
-              Plan Your <span className="text-amber-500">Journey</span>
-            </CardTitle>
-            <CardDescription className="text-slate-500 dark:text-zinc-400">
-              Safe, reliable, and premium dispatch services at your fingertips.
-            </CardDescription>
-          </CardHeader>
+            <h1 className="text-4xl font-bold tracking-tight text-white italic">
+              Swift<span className="text-orange-500">Route</span>
+            </h1>
+            <p className="text-slate-400 font-light tracking-wide">
+              Enter details to unlock real-time fleet availability.
+            </p>
+          </div>
 
-          <CardContent className="p-6 md:p-10">
-            {/* TRIP TYPE TOGGLE (Modern Segmented Control) */}
-            <div className="relative flex p-1 bg-slate-100 dark:bg-zinc-800 rounded-2xl mb-10">
-              <motion.div
-                layoutId="activeTab"
-                className="absolute inset-1 bg-white dark:bg-zinc-700 rounded-xl shadow-sm"
-                initial={false}
-                animate={{ x: serviceType === "One-Way" ? "0%" : "100%" }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                style={{ width: "calc(50% - 4px)" }}
-              />
-              <button
-                onClick={() => setServiceType("One-Way")}
-                className={cn(
-                  "relative z-10 w-1/2 py-3 text-sm font-bold uppercase tracking-wider transition-colors",
-                  serviceType === "One-Way"
-                    ? "text-amber-600 dark:text-amber-400"
-                    : "text-slate-500",
-                )}
-              >
-                One Way
-              </button>
-              <button
-                onClick={() => setServiceType("Round-Trip")}
-                className={cn(
-                  "relative z-10 w-1/2 py-3 text-sm font-bold uppercase tracking-wider transition-colors",
-                  serviceType === "Round-Trip"
-                    ? "text-amber-600 dark:text-amber-400"
-                    : "text-slate-500",
-                )}
-              >
-                Round Trip
-              </button>
+          <CardContent className="p-8 md:p-12">
+            {/* Trip Toggle */}
+            <div className="flex p-1.5 bg-zinc-900/80 rounded-2xl mb-10 border border-white/5 relative">
+              {["One-Way", "Round-Trip"].map((type) => (
+                <button
+                  key={type}
+                  onClick={() => setServiceType(type)}
+                  className={cn(
+                    "relative flex-1 py-3 text-xs font-bold uppercase tracking-[0.2em] transition-all duration-300 rounded-xl z-10",
+                    serviceType === type ? "text-white" : "text-slate-500",
+                  )}
+                >
+                  {type}
+                  {serviceType === type && (
+                    <motion.div
+                      layoutId="tab-bg"
+                      className="absolute inset-0 bg-gradient-to-r from-orange-600 to-rose-600 rounded-xl -z-10 shadow-lg shadow-orange-500/20"
+                    />
+                  )}
+                </button>
+              ))}
             </div>
 
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
+                className="space-y-10"
               >
-                {/* LOCATION FIELDS with visual track line */}
-                <div className="relative space-y-6">
-                  {/* The Vertical Track Line */}
-                  <div className="absolute left-[19px] top-6 bottom-6 w-[2px] bg-slate-200 dark:bg-zinc-700" />
+                {/* Routing Visualization */}
+                <div className="relative space-y-8">
+                  {/* The Techy Route Line */}
+                  <div className="absolute left-[21px] top-8 bottom-8 w-[1px] bg-gradient-to-b from-orange-500 via-rose-500 to-transparent dashed" />
 
                   <FormField
                     control={form.control}
                     name="pickup"
                     render={({ field }) => (
-                      <FormItem className="relative">
-                        <div className="flex items-center gap-4">
-                          <div className="z-10 bg-white dark:bg-zinc-900 rounded-full p-1.5 border-2 border-amber-500">
-                            <CircleDot className="h-3 w-3 text-amber-500" />
-                          </div>
-                          <div className="flex-1">
-                            <FormLabel className="text-xs font-bold uppercase tracking-widest text-slate-400">
-                              Pickup Point
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Enter your current location"
-                                className="border-0 border-b rounded-none px-0 focus-visible:ring-0 focus-visible:border-amber-500 bg-transparent text-lg font-medium"
-                                {...field}
-                              />
-                            </FormControl>
-                          </div>
+                      <FormItem className="relative pl-12">
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 p-2.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-500">
+                          <LocateFixed size={18} />
                         </div>
-                        <FormMessage className="ml-10" />
+                        <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-orange-500/70">
+                          Pick-up Location
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Current address or point of interest"
+                            className="bg-transparent border-0 border-b border-white/10 rounded-none px-0 h-12 text-white focus-visible:ring-0 focus-visible:border-orange-500 text-lg transition-all"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -195,49 +165,44 @@ export default function RideFinderForm() {
                     control={form.control}
                     name="drop"
                     render={({ field }) => (
-                      <FormItem className="relative">
-                        <div className="flex items-center gap-4">
-                          <div className="z-10 bg-white dark:bg-zinc-900 rounded-full p-1.5 border-2 border-slate-900 dark:border-white">
-                            <MapPin className="h-3 w-3 text-slate-900 dark:text-white" />
-                          </div>
-                          <div className="flex-1">
-                            <FormLabel className="text-xs font-bold uppercase tracking-widest text-slate-400">
-                              Destination
-                            </FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="Where are you going?"
-                                className="border-0 border-b rounded-none px-0 focus-visible:ring-0 focus-visible:border-amber-500 bg-transparent text-lg font-medium"
-                                {...field}
-                              />
-                            </FormControl>
-                          </div>
+                      <FormItem className="relative pl-12">
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-500">
+                          <Flag size={18} />
                         </div>
-                        <FormMessage className="ml-10" />
+                        <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-rose-500/70">
+                          Final Destination
+                        </FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Where to?"
+                            className="bg-transparent border-0 border-b border-white/10 rounded-none px-0 h-12 text-white focus-visible:ring-0 focus-visible:border-rose-500 text-lg transition-all"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
                 </div>
 
-                {/* DATE & TIME ROW */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Scheduling Grid */}
+                <div className="grid grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
                     name="date"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-xs font-bold uppercase tracking-widest text-slate-400">
-                          Pickup Date
+                        <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">
+                          Departure Date
                         </FormLabel>
                         <FormControl>
-                          <div className="relative group">
-                            <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-amber-500 transition-colors" />
+                          <div className="relative">
+                            <CalendarRange className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-orange-500" />
                             <Input
                               type="date"
                               {...field}
                               min={minDate}
-                              max={maxDate}
-                              className="pl-10 focus-visible:ring-amber-500"
+                              className="pl-10 bg-zinc-900/50 border-white/5 focus:border-orange-500/50 focus:ring-orange-500/20 text-white rounded-xl h-12"
                             />
                           </div>
                         </FormControl>
@@ -250,8 +215,8 @@ export default function RideFinderForm() {
                     name="time"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-xs font-bold uppercase tracking-widest text-slate-400">
-                          Pickup Time
+                        <FormLabel className="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">
+                          Departure Time
                         </FormLabel>
                         <FormControl>
                           <TimePicker
@@ -267,29 +232,40 @@ export default function RideFinderForm() {
 
                 <Button
                   type="submit"
-                  className="w-full h-14 text-lg font-black uppercase tracking-tighter bg-amber-400 hover:bg-amber-500 text-slate-950 rounded-2xl shadow-xl shadow-amber-500/20 group transition-all"
+                  className="group w-full h-16 bg-gradient-to-r from-orange-600 to-rose-600 hover:from-orange-500 hover:to-rose-500 text-white border-none rounded-2xl text-lg font-bold transition-all duration-300 shadow-xl shadow-orange-900/20 overflow-hidden"
                 >
-                  Find My Ride
-                  <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  <div className="flex items-center justify-center gap-2 group-hover:scale-105 transition-transform">
+                    <span>ANALYZE FARE</span>
+                    <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                  {/* Subtle scanning light effect */}
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                 </Button>
               </form>
             </Form>
           </CardContent>
         </Card>
 
-        {/* TRUST BADGE */}
-        <div className="mt-8 flex items-center justify-center gap-6 opacity-50 dark:opacity-30 grayscale hover:grayscale-0 transition-all duration-500">
-          <span className="text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
-            Verified Drivers
-          </span>
-          <div className="h-px w-12 bg-slate-400" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
-            24/7 Support
-          </span>
-          <div className="h-px w-12 bg-slate-400" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
-            Safe Travels
-          </span>
+        {/* Footer Metrics */}
+        <div className="mt-12 grid grid-cols-3 gap-4">
+          {[
+            { label: "Active Cabs", val: "482", icon: Zap },
+            { label: "Avg. Wait", val: "4 min", icon: Activity },
+            { label: "Driver Rating", val: "4.95", icon: Zap },
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              className="bg-white/5 border border-white/5 rounded-2xl p-4 flex flex-col items-center justify-center gap-1 backdrop-blur-md"
+            >
+              <item.icon size={14} className="text-orange-500 mb-1" />
+              <span className="text-white font-bold text-sm tracking-tight">
+                {item.val}
+              </span>
+              <span className="text-[9px] uppercase tracking-widest text-slate-500 font-medium">
+                {item.label}
+              </span>
+            </div>
+          ))}
         </div>
       </motion.div>
     </section>

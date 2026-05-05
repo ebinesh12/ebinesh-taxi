@@ -2,110 +2,185 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Car, MapPin } from "lucide-react";
+import {
+  CarTaxiFront,
+  Navigation,
+  Satellite,
+  Cpu,
+  Globe,
+  Zap,
+} from "lucide-react";
 
-const loadingTexts = [
-  "Locating nearby taxis...",
-  "Calculating the fastest route...",
-  "Checking traffic conditions...",
-  "Finding your driver...",
-  "Polishing the yellow paint...",
+const loadingSteps = [
+  {
+    text: "Initializing Global Dispatch...",
+    icon: Globe,
+    color: "text-blue-400",
+  },
+  {
+    text: "Syncing with Traffic Satellites...",
+    icon: Satellite,
+    color: "text-indigo-400",
+  },
+  {
+    text: "Optimizing Neural Route AI...",
+    icon: Cpu,
+    color: "text-violet-400",
+  },
+  {
+    text: "Calibrating Premium Fleet...",
+    icon: CarTaxiFront,
+    color: "text-cyan-400",
+  },
+  { text: "Finalizing Rapid Pickup...", icon: Zap, color: "text-emerald-400" },
 ];
 
 export default function Loading() {
   const [index, setIndex] = useState(0);
 
-  // Rotate loading text every 2 seconds
   useEffect(() => {
     const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % loadingTexts.length);
-    }, 2000);
+      setIndex((prev) => (prev + 1) % loadingSteps.length);
+    }, 2500);
     return () => clearInterval(timer);
   }, []);
 
+  const CurrentIcon = loadingSteps[index].icon;
+
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-screen w-full overflow-hidden bg-white dark:bg-slate-950">
-      {/* 1. City Grid Background (Modern UX) */}
-      <div className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
-        <div
-          className="h-full w-full"
-          style={{
-            backgroundImage: `radial-gradient(circle, currentColor 1px, transparent 1px)`,
-            backgroundSize: "40px 40px",
+    <div className="relative flex flex-col items-center justify-center min-h-screen w-full overflow-hidden bg-[#020617] text-slate-100">
+      {/* 1. Animated Mesh Gradient Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.15, 0.3, 0.15],
           }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute -top-[20%] -left-[10%] w-[70%] h-[70%] bg-indigo-600/20 rounded-full blur-[120px]"
+        />
+        <motion.div
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.1, 0.2, 0.1],
+          }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute -bottom-[20%] -right-[10%] w-[60%] h-[60%] bg-violet-600/20 rounded-full blur-[120px]"
         />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center px-6 text-center">
-        {/* 2. Moving Car Animation */}
-        <div className="relative w-48 h-20 mb-8 flex items-end justify-center">
-          {/* Road Line */}
-          <div className="absolute bottom-0 w-full h-[2px] bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-            <motion.div
-              initial={{ x: "-100%" }}
-              animate={{ x: "100%" }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-              className="w-1/2 h-full bg-yellow-400 dark:bg-yellow-500 shadow-[0_0_10px_rgba(234,179,8,0.5)]"
-            />
+      <div className="relative z-10 flex flex-col items-center px-6 max-w-sm w-full text-center">
+        {/* 2. Abstract Pathfinding Loader */}
+        <div className="relative w-32 h-32 mb-12">
+          {/* Outer Rotating Ring */}
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 rounded-full border-2 border-dashed border-white/10"
+          />
+
+          {/* Pulsing Core */}
+          <div className="absolute inset-4 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={index}
+                initial={{ scale: 0.5, opacity: 0, rotate: -20 }}
+                animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                exit={{ scale: 1.5, opacity: 0, rotate: 20 }}
+                className={loadingSteps[index].color}
+              >
+                <CurrentIcon size={40} strokeWidth={1.5} />
+              </motion.div>
+            </AnimatePresence>
           </div>
 
-          {/* Taxi Icon with 'Bounce' and 'Drive' effect */}
+          {/* Orbiting Node */}
           <motion.div
-            animate={{
-              y: [0, -4, 0],
-              x: [-2, 2, -2],
-            }}
-            transition={{
-              y: { repeat: Infinity, duration: 0.4, ease: "easeInOut" },
-              x: { repeat: Infinity, duration: 2, ease: "easeInOut" },
-            }}
-            className="flex flex-col items-center"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0"
           >
-            <div className="p-3 rounded-xl bg-yellow-400 dark:bg-yellow-500 shadow-lg dark:shadow-yellow-500/20">
-              <Car className="w-8 h-8 text-slate-900" />
-            </div>
-            {/* Animated Shadow */}
-            <motion.div
-              animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.1, 0.2] }}
-              transition={{ repeat: Infinity, duration: 0.4 }}
-              className="w-8 h-1 bg-black/20 dark:bg-white/10 blur-sm rounded-full mt-1"
-            />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-cyan-400 rounded-full shadow-[0_0_15px_rgba(34,211,238,0.8)]" />
           </motion.div>
         </div>
 
-        {/* 3. Status Text (Shadcn-style Typography) */}
-        <div className="h-8 overflow-hidden mb-4">
+        {/* 3. High-End Typography */}
+        <div className="space-y-2 mb-10">
+          <div className="h-6 overflow-hidden">
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={index}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                className="text-[10px] font-bold uppercase tracking-[0.4em] text-indigo-400"
+              >
+                System Status
+              </motion.p>
+            </AnimatePresence>
+          </div>
+
           <AnimatePresence mode="wait">
-            <motion.p
+            <motion.h2
               key={index}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: -20, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="text-sm font-medium tracking-tight text-slate-600 dark:text-slate-400"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-xl font-light tracking-tight text-white"
             >
-              {loadingTexts[index]}
-            </motion.p>
+              {loadingSteps[index].text}
+            </motion.h2>
           </AnimatePresence>
         </div>
 
-        {/* 4. Progress Bar (Shadcn Pattern) */}
-        <div className="w-64 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-          <motion.div
-            initial={{ width: "0%" }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 10, ease: "easeInOut" }}
-            className="h-full bg-slate-900 dark:bg-slate-100"
-          />
+        {/* 4. Segmented Progress Bar */}
+        <div className="flex gap-1.5 w-full justify-center">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <div
+              key={i}
+              className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden"
+            >
+              {i <= index && (
+                <motion.div
+                  initial={{ x: "-100%" }}
+                  animate={{ x: "0%" }}
+                  className="h-full bg-gradient-to-r from-indigo-500 to-cyan-400"
+                />
+              )}
+            </div>
+          ))}
         </div>
 
-        {/* 5. Footer Branding */}
-        <div className="mt-12 flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-yellow-500 animate-pulse" />
-          <span className="text-xs uppercase tracking-[0.2em] font-bold text-slate-400 dark:text-slate-600">
-            Premium Ride Service
+        {/* 5. Footer Logic */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="mt-16 flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/5 border border-white/5 backdrop-blur-md"
+        >
+          <Navigation className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+          <span className="text-[9px] uppercase tracking-[0.25em] font-black text-slate-400">
+            Quantum Mobility Dispatch
           </span>
-        </div>
+        </motion.div>
+      </div>
+
+      {/* Subtle Speed Lines Background */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            initial={{ x: "-100%", y: `${i * 20}%` }}
+            animate={{ x: "200%" }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              delay: i * 0.4,
+              ease: "linear",
+            }}
+            className="absolute h-[1px] w-32 bg-gradient-to-r from-transparent via-indigo-500 to-transparent"
+          />
+        ))}
       </div>
     </div>
   );

@@ -3,117 +3,151 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
-  RefreshCcw,
-  TriangleAlert,
-  Wrench,
-  ShieldAlert,
-  PhoneCall,
+  RefreshCw,
+  Construction,
+  HardHat,
+  AlertOctagon,
+  Headphones,
+  CarTaxiFront,
+  Activity,
+  Terminal,
 } from "lucide-react";
 
 export default function GlobalError({ error, reset }) {
   useEffect(() => {
-    // Log error to monitoring service (Sentry, LogRocket, etc.)
     console.error(error);
   }, [error]);
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[100dvh] px-6 py-12 text-center bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-50 overflow-hidden">
-      {/* 1. Background Pattern: Subtle Taxi Checkers */}
-      <div className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none">
+    <div className="relative flex flex-col items-center justify-center min-h-screen px-6 py-12 overflow-hidden bg-[#050505] text-zinc-100">
+      {/* 1. Background: Radar/Grid Pattern */}
+      <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
         <div
           className="h-full w-full"
           style={{
-            backgroundImage: `conic-gradient(from 0deg at 50% 50%, #000 25%, transparent 25%, transparent 50%, #000 50%, #000 75%, transparent 75%, transparent)`,
-            backgroundSize: "100px 100px",
+            backgroundImage: `radial-gradient(circle at 2px 2px, #333 1px, transparent 0)`,
+            backgroundSize: "40px 40px",
           }}
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]" />
       </div>
 
-      <main className="relative z-10 max-w-xl mx-auto flex flex-col items-center">
-        {/* 2. Visual Warning: Hazard Light Animation */}
-        <div className="relative mb-10">
+      <main className="relative z-10 max-w-2xl w-full mx-auto flex flex-col items-center">
+        {/* 2. Visual: Glowing Warning Beacon */}
+        <div className="relative mb-12">
           <motion.div
-            animate={{ opacity: [1, 0.4, 1] }}
-            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-            className="absolute -inset-4 bg-yellow-500/20 dark:bg-yellow-500/10 rounded-full blur-2xl"
+            animate={{ scale: [1, 1.1, 1], opacity: [0.5, 0.8, 0.5] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+            className="absolute -inset-8 bg-orange-600/20 rounded-full blur-3xl"
           />
-          <div className="relative p-6 bg-yellow-400 dark:bg-yellow-500 rounded-2xl shadow-2xl shadow-yellow-500/20 transform rotate-3">
-            <TriangleAlert className="h-12 w-12 text-slate-950 stroke-[2.5px]" />
-          </div>
-          <div className="absolute -bottom-2 -right-2 p-2 bg-slate-900 dark:bg-slate-50 rounded-lg shadow-xl">
-            <Wrench className="h-4 w-4 text-slate-50 dark:text-slate-900" />
+          <div className="relative flex items-center justify-center">
+            <div className="p-8 bg-zinc-900 border border-white/10 rounded-[2.5rem] shadow-2xl relative">
+              <AlertOctagon
+                className="h-16 w-16 text-orange-500"
+                strokeWidth={1.5}
+              />
+
+              {/* Floating Mini Icons */}
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ repeat: Infinity, duration: 2 }}
+                className="absolute -top-2 -right-2 p-2 bg-zinc-800 border border-white/10 rounded-xl shadow-lg"
+              >
+                <HardHat className="h-5 w-5 text-orange-400" />
+              </motion.div>
+            </div>
           </div>
         </div>
 
-        {/* 3. Typography & Messaging */}
-        <header className="space-y-4 mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-200 dark:bg-slate-800 text-[10px] font-black uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400 border border-slate-300 dark:border-slate-700">
-            <ShieldAlert className="w-3 h-3" />
-            Dispatch System Interrupted
+        {/* 3. Messaging: Premium Dispatch Voice */}
+        <header className="space-y-6 text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-[10px] font-bold uppercase tracking-[0.3em] text-orange-500">
+            <Activity className="w-3 h-3 animate-pulse" />
+            Terminal Connection Severed
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-slate-900 dark:text-slate-50 uppercase italic">
-            Engine Trouble.
+          <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight text-white italic">
+            Route <span className="text-orange-500">Blocked.</span>
           </h1>
 
-          <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed max-w-sm mx-auto font-medium">
-            Our digital dispatch center hit a roadblock. We&apos;re currently
-            working on getting the fleet back online.
+          <p className="text-zinc-400 text-lg max-w-md mx-auto leading-relaxed font-light">
+            Our automated dispatch system encountered a critical stall. The
+            fleet is currently on standby while we recalibrate.
           </p>
         </header>
 
-        {/* 4. Diagnostic Section (Modern Technical Look) */}
-        <div className="w-full mb-10 p-4 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-[10px] font-mono uppercase text-slate-400 tracking-widest">
-              Diagnostic Report
+        {/* 4. Diagnostic Card: System Scans */}
+        <div className="w-full bg-zinc-900/50 backdrop-blur-xl border border-white/5 rounded-3xl p-6 md:p-8 mb-12 shadow-2xl overflow-hidden group">
+          <div className="flex items-center gap-3 mb-6">
+            <Terminal className="w-4 h-4 text-zinc-500" />
+            <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
+              System Telemetry Data
             </span>
-            <span className="flex h-2 w-2 rounded-full bg-red-500 animate-pulse" />
           </div>
-          <Separator className="mb-3 opacity-50" />
-          <code className="block text-left text-xs font-mono text-slate-500 dark:text-slate-300 break-all leading-relaxed">
-            <span className="text-yellow-500 font-bold mr-2">ERR_CODE:</span>
-            {error?.digest || "INTERNAL_DRIVE_FAILURE"}
-            <br />
-            <span className="text-yellow-500 font-bold mr-2">LOG:</span>
-            {error?.message || "Unexpected stall in main navigation thread."}
-          </code>
+
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 bg-black/40 rounded-2xl border border-white/5">
+                <p className="text-[10px] text-zinc-600 uppercase font-bold mb-1">
+                  Fault Digest
+                </p>
+                <code className="text-xs text-orange-200/70 font-mono break-all">
+                  {error?.digest || "NO_DIGEST_AVAILABLE"}
+                </code>
+              </div>
+              <div className="p-4 bg-black/40 rounded-2xl border border-white/5">
+                <p className="text-[10px] text-zinc-600 uppercase font-bold mb-1">
+                  Thread Status
+                </p>
+                <p className="text-xs text-rose-400 font-mono italic">
+                  TERMINATED_UNEXPECTEDLY
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 bg-black/40 rounded-2xl border border-white/5">
+              <p className="text-[10px] text-zinc-600 uppercase font-bold mb-1">
+                Stack Log
+              </p>
+              <p className="text-xs text-zinc-400 font-mono">
+                {error?.message ||
+                  "Navigation thread stalled at index 0x00... [RETRY_REQUIRED]"}
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* 5. Action Buttons (Shadcn + Premium Styling) */}
-        <div className="flex flex-col sm:flex-row items-center gap-4 w-full">
+        {/* 5. Control Interface */}
+        <div className="flex flex-col sm:flex-row items-center gap-6 w-full">
           <Button
             onClick={() => reset()}
-            size="lg"
-            className="w-full sm:flex-1 rounded-xl h-14 bg-yellow-400 hover:bg-yellow-500 text-slate-900 font-bold text-base shadow-lg shadow-yellow-500/20 group"
+            className="w-full sm:flex-1 h-16 bg-white text-black hover:bg-orange-500 hover:text-white rounded-2xl font-bold text-base transition-all duration-300 shadow-xl shadow-white/5 group"
           >
-            <RefreshCcw className="mr-2 h-5 w-5 transition-transform group-hover:rotate-180 duration-500" />
-            Restart Engine
+            <RefreshCw className="mr-3 h-5 w-5 transition-transform group-hover:rotate-180 duration-700" />
+            Reboot Systems
           </Button>
 
           <Button
             variant="outline"
-            size="lg"
-            className="w-full sm:flex-1 rounded-xl h-14 border-slate-200 dark:border-slate-800 dark:bg-slate-950 font-bold text-base hover:bg-slate-100 dark:hover:bg-slate-900 transition-all"
+            className="w-full sm:flex-1 h-16 border-white/10 bg-transparent text-white hover:bg-white/5 rounded-2xl font-bold text-base transition-all"
           >
-            <PhoneCall className="mr-2 h-4 w-4" />
-            Support
+            <Headphones className="mr-3 h-5 w-5" />
+            Contact Dispatch
           </Button>
         </div>
 
-        {/* 6. Professional Footer */}
-        <footer className="mt-16 flex flex-col items-center gap-6 opacity-40">
-          <div className="flex items-center gap-4">
-            <div className="h-[1px] w-12 bg-slate-400 dark:bg-slate-600" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.3em] whitespace-nowrap">
-              Taxi Dispatch v2.0
-            </span>
-            <div className="h-[1px] w-12 bg-slate-400 dark:bg-slate-600" />
+        {/* 6. Professional Finisher */}
+        <footer className="mt-20 flex flex-col items-center space-y-8 opacity-20 group">
+          <div className="flex items-center gap-6">
+            <Construction size={20} />
+            <div className="h-[1px] w-24 bg-white/20" />
+            <CarTaxiFront size={24} />
+            <div className="h-[1px] w-24 bg-white/20" />
+            <Activity size={20} />
           </div>
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest">
-            Safe travels &bull; Reliable Service &bull; 24/7
+          <p className="text-[9px] uppercase tracking-[0.5em] font-black text-center text-white">
+            Premium Mobility Infrastructure • 24/7 Global Response
           </p>
         </footer>
       </main>
